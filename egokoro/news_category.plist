@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>news</key>
+	<dict>
+		<key>カテゴリ</key>
+		<dict>
+			<key>海外</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/world/rss.xml</string>
+			<key>国内</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/domestic/rss.xml</string>
+			<key>コンピュータ</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/computer/rss.xml</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

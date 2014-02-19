@@ -8,6 +8,34 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource>
+{
+#define TABBAR_HEIGHT           (49)
+#define NAVIGATIONBAR_HEIGHT    (44)
+#define AD_HEIGHT (50)
+    
+@public
+    enum TAG_TAB { TAG_TAB0, TAG_TAB1, TAG_TAB2, };
+    
+@private
+    CGRect          m_rcMainSrcn;
+    CGRect          m_notframSrcn;
+    
+    UITabBar        *m_TabBar;
+    UITabBarItem    *m_Tab0;
+    UITabBarItem    *m_Tab1;
+    UITabBarItem    *m_Tab2;
+    enum TAG_TAB    m_eSelect;
+    
+    UIView              *m_View;
+    UINavigationBar     *m_NavBar;
+    UINavigationItem    *m_NavItem;
+    UITableView         *m_TblView;
+}
+
+@property(retain)  NSMutableArray *items;
+@property(retain)  NSString *news_address;
+
+- (void)initView:title withColor:(UIColor *)color;
 
 @end

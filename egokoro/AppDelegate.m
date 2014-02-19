@@ -7,12 +7,85 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import "HHTabListController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // 次の2行を追加
+//    ViewController* topMenu = [[ViewController alloc] init];
+//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:topMenu];
+    
+    NSString *path;
+    NSBundle *bundle = [NSBundle mainBundle];
+    path = [bundle pathForResource:@"news_category" ofType:@"plist"];
+    NSDictionary *plist_dict = [NSDictionary dictionaryWithContentsOfFile:path];
+    
+    NSDictionary *newslist = [plist_dict objectForKey:@"news"];
+    //NSDictionary *category_list = [newslist objectForKey:@"カテゴリ"];
+    NSArray *sortArray = [newslist allKeys];
+    
+    NSSortDescriptor *sortDescNumber;
+    sortDescNumber = [[NSSortDescriptor alloc] initWithKey:nil ascending:YES];
+    
+    // NSSortDescriptorは配列に入れてNSArrayに渡す
+    NSArray *sortDescArray;
+    sortDescArray = [NSArray arrayWithObjects:sortDescNumber, nil];
+    
+    // ソートの実行
+    NSArray *news_name_list;
+    news_name_list = [sortArray sortedArrayUsingDescriptors:sortDescArray];
+
+    
+    NSMutableArray *ep_titles = [[NSMutableArray alloc] init];
+    //NSArray *ep_list = @[@"国内",@"国外"];
+    //[ep_titles addObject:ep_list];
+    
+    //NSArray *season_name_list = @[@"news"];
+    
+    NSMutableDictionary *viewControllers = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *ep_viewControllers = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *tmp_epviewcont;
+    
+    for (NSString *key_news_name in news_name_list ) {
+        NSDictionary *one_news = [newslist objectForKey:key_news_name];
+        // [one_season]
+        NSArray *tmp_ep_list = [one_news allKeys];
+        NSArray *ep_list = [tmp_ep_list sortedArrayUsingDescriptors:sortDescArray];
+        [ep_titles addObject:ep_list];
+
+        for (NSString *ep_name in ep_list) {
+            ViewController* topMenu = [[ViewController alloc] init];
+            [topMenu setTitle:ep_name];
+            NSString *add = [one_news objectForKey:ep_name];
+            topMenu.news_address = add;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:topMenu];
+            
+            [ep_viewControllers setObject:navigationController forKey:ep_name];
+        }
+        tmp_epviewcont = [ep_viewControllers copy];
+        [viewControllers setObject:tmp_epviewcont forKey:key_news_name];
+        [ep_viewControllers removeAllObjects];
+    }
+    
+    
+    NSDictionary *data_source = [NSDictionary dictionaryWithObjects:ep_titles forKeys:news_name_list];
+    HHTabListController *hhcont;
+    hhcont = [HHTabListController alloc];
+    hhcont.sectionList = news_name_list;
+    hhcont.dataSource = data_source;
+    //[hhcont setDelegate:hhcont.delegate];
+    hhcont = [hhcont initWithViewControllers:viewControllers];
+    
+  	self.viewController = hhcont;
+    self.window.rootViewController =  self.viewController;
+    
+    //    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							
