@@ -37,6 +37,13 @@
                         //NSString *news_text = cell.detailTextLabel.text;
                         cell.detailTextLabel.text = desc;
                         NSArray* indexPaths = [NSArray arrayWithObject:indexPath];
+                        /*
+                        UIImage_Text *img_text = [csl_ins getImageText:self.title];
+                        cell.NewsDetail.text = desc;
+                        if (img_text!=nil) {
+                             [cell.NewsDetail setDrawImage:img_text.image];
+                        }
+                       */
                         [my_tableview reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
                         break;
                     }

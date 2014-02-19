@@ -41,9 +41,10 @@
 -(void)setDrawImage:(UIImage *)image
 {
     
+    
     // 非表示領域を設定（四角形）
     CGRect exclusionRect =
-    CGRectMake(320 - image.size.width*0.5, 20,
+    CGRectMake(self.frame.size.width - image.size.width*0.5, 0,
                image.size.width*0.5, image.size.height*0.5);
     UIBezierPath *path = [UIBezierPath bezierPathWithRect:exclusionRect];
     
@@ -51,6 +52,8 @@
     self.textContainer.exclusionPaths = @[path];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.frame = exclusionRect;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
     self.imgview = imageView;
     [self addSubview:imageView];
 }

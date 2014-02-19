@@ -13,10 +13,9 @@
 {
     CoreData_save_load *csl_ins;
     int Setimage_from_ACE;
+    ACEViewController *_paint_view;
 }
 @end
-
-static ACEViewController *_paint_view;
 
 @implementation News_Paper_View
 
@@ -107,10 +106,13 @@ static ACEViewController *_paint_view;
 - (IBAction)post_newsImage:(id)sender
 {
     UIImage_Text *imagetext = [[UIImage_Text alloc] init];
-    imagetext.image = _paint_view.drawingView.image;
-    imagetext.text  = self.text;
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
-    [csl_ins store_NSData:data andkey:self.news_title];
+    if (_paint_view!=nil) {
+        imagetext.image = _paint_view.drawingView.image;
+        imagetext.text  = self.text;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
+        [csl_ins store_NSData:data andkey:self.news_title];
+    }
+   
 }
 
 #pragma mark private mathod

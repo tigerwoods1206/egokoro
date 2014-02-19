@@ -15,6 +15,7 @@
 #import "Url_content.h"
 #import "Item.h"
 #import "News_Cell.h"
+#import "Imagetext_save_load.h"
 
 @interface ViewController () <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 {
@@ -40,8 +41,7 @@
     m_rcMainSrcn = [[UIScreen mainScreen] applicationFrame];
     m_notframSrcn = [[UIScreen mainScreen] bounds];
     
-    
-     [self initView:@"main" withColor:[UIColor grayColor]];
+    [self initView:@"main" withColor:[UIColor grayColor]];
     self.navigationController.delegate = self;
     
     //refresh cont
@@ -177,6 +177,7 @@
             
             _item.title = title;
             _item.date = str_date_jpn;
+            
             if (set_description_flg) {
                 //_item.description = @"";
                 NSDictionary *channel_link_ar = [one_chan valueForKey:@"link"];
@@ -216,10 +217,11 @@
     }
     
     //cell.contentView
-    cell.NewsTitle.text  = [item title];
+    //cell.NewsTitle.text  = [item title];
+    [cell setNewsTitleText:[item title]];
     cell.NewsDay.text    = [item date];
     cell.NewsDetail.text = [item description];
-    [cell.NewsDetail cutOutframeText];
+    //[cell.NewsDetail cutOutframeText];
 
 //    cell.textLabel.text = [item title];
 //    cell.detailTextLabel.text = [item description];

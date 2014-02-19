@@ -16,6 +16,7 @@
 		57AA13EF18B2D48D00DF504C /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */; };
 		57AA13F018B2D48D00DF504C /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */; };
 		57AA13F618B3AD5E00DF504C /* UIImage+Text.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13F518B3AD5E00DF504C /* UIImage+Text.m */; };
+		57AA13F918B4E89B00DF504C /* Imagetext_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13F818B4E89B00DF504C /* Imagetext_save_load.m */; };
 		57AED63718ABB94A008A4A58 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63618ABB94A008A4A58 /* AWSRuntime.framework */; };
 		57AED63A18ABB95D008A4A58 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63818ABB95D008A4A58 /* AWSS3.framework */; };
 		57AED63B18ABB95D008A4A58 /* AWSSimpleDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63918ABB95D008A4A58 /* AWSSimpleDB.framework */; };
@@ -136,6 +137,8 @@
 		57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		57AA13F418B3AD5E00DF504C /* UIImage+Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Text.h"; sourceTree = "<group>"; };
 		57AA13F518B3AD5E00DF504C /* UIImage+Text.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Text.m"; sourceTree = "<group>"; };
+		57AA13F718B4E89B00DF504C /* Imagetext_save_load.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imagetext_save_load.h; sourceTree = "<group>"; };
+		57AA13F818B4E89B00DF504C /* Imagetext_save_load.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Imagetext_save_load.m; sourceTree = "<group>"; };
 		57AED63618ABB94A008A4A58 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSRuntime.framework; sourceTree = "<group>"; };
 		57AED63818ABB95D008A4A58 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		57AED63918ABB95D008A4A58 /* AWSSimpleDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSimpleDB.framework; sourceTree = "<group>"; };
@@ -391,6 +394,8 @@
 				57AED64C18ABBDB1008A4A58 /* Model.xcdatamodeld */,
 				57AED65518AC3CB3008A4A58 /* CoreData_save_load.h */,
 				57AED65618AC3CB3008A4A58 /* CoreData_save_load.m */,
+				57AA13F718B4E89B00DF504C /* Imagetext_save_load.h */,
+				57AA13F818B4E89B00DF504C /* Imagetext_save_load.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -882,6 +887,7 @@
 				57BE455C1880F9F4003F02B0 /* ASICloudFilesCDNRequest.m in Sources */,
 				57BE455E1880F9F4003F02B0 /* ASICloudFilesContainerRequest.m in Sources */,
 				57BE45571880F9F4003F02B0 /* ASIFormDataRequest.m in Sources */,
+				57AA13F918B4E89B00DF504C /* Imagetext_save_load.m in Sources */,
 				57CDF8671876E5140010BAD7 /* UIImageTextView.m in Sources */,
 				57F391F7187645A6004210DB /* ILColorPickerView.m in Sources */,
 				57AED66118AF34B7008A4A58 /* SimpleDB_DataList.m in Sources */,

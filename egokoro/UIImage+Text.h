@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "Codable.h"
 
-@interface UIImage_Text : NSObject
+@interface UIImage_Text : Codable
 
 @property UIImage  *image;
 @property NSString *text;

@@ -7,6 +7,13 @@
 //
 
 #import "News_Cell.h"
+#import "Imagetext_save_load.h"
+
+@interface News_Cell ()
+{
+    Imagetext_save_load *Img_sl;
+}
+@end
 
 @implementation News_Cell
 
@@ -28,5 +35,17 @@
     // Drawing code
 }
 */
+
+-(void)setNewsTitleText:(NSString *)NewsTitleText
+{
+    Img_sl = [[Imagetext_save_load alloc] init];
+    UIImage_Text *it = [Img_sl getImageText:NewsTitleText];
+    self.NewsTitle.text = NewsTitleText;
+    if (it!=nil && it.image!=nil) {
+        [self.NewsImage setImage:it.image];
+        self.NewsImage.contentMode = UIViewContentModeScaleAspectFill;
+        self.NewsImage.clipsToBounds = YES;
+    }
+}
 
 @end

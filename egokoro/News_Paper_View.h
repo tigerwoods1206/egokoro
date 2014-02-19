@@ -20,8 +20,10 @@
 
 @interface News_Paper_View : UIViewController<UICustumImageTextView_Tap_Delegate,UINavigationBarDelegate>
 {
+    
 }
 @property (weak, nonatomic) IBOutlet UIImageTextView *News_Text_View;
+//@property ACEViewController *paint_view;
 @property NSString *text;
 @property NSString *news_title;
 //@property ACEViewController *paint_view;
