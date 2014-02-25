@@ -14,5 +14,6 @@
 
 @property UIImage  *image;
 @property NSString *text;
+@property NSString *news_title;
 
 @end

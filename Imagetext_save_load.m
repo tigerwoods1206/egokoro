@@ -35,4 +35,19 @@
     [inst store_NSData:data andkey:title];
 }
 
+-(NSArray *)getImageArray
+{
+    NSArray *dataarr = [inst get_dataarray:7];
+    NSMutableArray *imgarr = [[NSMutableArray alloc] init];
+    for(NSData *data in dataarr)
+    {
+        if(data!=nil){
+            UIImage_Text *load_image = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            [imgarr addObject:load_image];
+        }
+
+    }
+    return imgarr;
+}
+
 @end

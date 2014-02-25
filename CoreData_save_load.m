@@ -232,7 +232,7 @@
 
 }
 
--(NSArray *)get_dataarray
+-(NSArray *)get_dataarray:(int)before_day
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -250,9 +250,12 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // 取得条件の設定
-    //    NSPredicate *pred;
-    //    pred = [NSPredicate predicateWithFormat:@"key = %@", keynum];
-    //    [fetchRequest setPredicate:pred];
+    NSDate* endDate = [NSDate date];
+    NSDate* startDate   = [NSDate dateWithTimeIntervalSinceNow:-86400*before_day];
+    NSPredicate *pred;
+    pred = [NSPredicate predicateWithFormat: @"(key >= %@ ) and (key < %@)",startDate,endDate];
+    //pred = [NSPredicate predicateWithFormat:@"key = %@", keynum];
+    [fetchRequest setPredicate:pred];
     
     // 取得最大数の設定
     [fetchRequest setFetchBatchSize:100];
@@ -275,7 +278,13 @@
     // 取得結果は[fetchedObjects]プロパティに入っている
     NSArray *result = resultsController.fetchedObjects;
     
-    return result;
+    NSMutableArray *data_arr = [[NSMutableArray alloc] init];
+    for (int idx = 0; idx < [result count]; idx++) {
+        [data_arr addObject:[[result objectAtIndex:idx] valueForKey:@"data"]];
+    }
+   // NSData *data = [[result objectAtIndex:0] valueForKey:@"data"];
+    
+    return data_arr;
     
 }
 

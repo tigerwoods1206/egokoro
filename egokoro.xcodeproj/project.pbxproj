@@ -13,10 +13,12 @@
 		570B91E2185FC947008CF042 /* ACEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B91D5185FC947008CF042 /* ACEViewController.m */; };
 		570B91E6185FC947008CF042 /* ACEViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 570B91D9185FC947008CF042 /* ACEViewController.xib */; };
 		570B91EB1861192A008CF042 /* Open_YahooURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B91EA1861192A008CF042 /* Open_YahooURL.m */; };
+		572CBBC718BAD228008E6D13 /* S3_SimpleDB_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */; };
 		57AA13EF18B2D48D00DF504C /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */; };
 		57AA13F018B2D48D00DF504C /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */; };
 		57AA13F618B3AD5E00DF504C /* UIImage+Text.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13F518B3AD5E00DF504C /* UIImage+Text.m */; };
 		57AA13F918B4E89B00DF504C /* Imagetext_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AA13F818B4E89B00DF504C /* Imagetext_save_load.m */; };
+		57AA13FB18B78E4D00DF504C /* menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57AA13FA18B78E4D00DF504C /* menu.plist */; };
 		57AED63718ABB94A008A4A58 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63618ABB94A008A4A58 /* AWSRuntime.framework */; };
 		57AED63A18ABB95D008A4A58 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63818ABB95D008A4A58 /* AWSS3.framework */; };
 		57AED63B18ABB95D008A4A58 /* AWSSimpleDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AED63918ABB95D008A4A58 /* AWSSimpleDB.framework */; };
@@ -132,6 +134,8 @@
 		570B91DA185FC947008CF042 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ACEViewController.xib; sourceTree = "<group>"; };
 		570B91E91861192A008CF042 /* Open_YahooURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Open_YahooURL.h; sourceTree = "<group>"; };
 		570B91EA1861192A008CF042 /* Open_YahooURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Open_YahooURL.m; sourceTree = "<group>"; };
+		572CBBC518BAD228008E6D13 /* S3_SimpleDB_save_load.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S3_SimpleDB_save_load.h; sourceTree = "<group>"; };
+		572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = S3_SimpleDB_save_load.m; sourceTree = "<group>"; };
 		57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		57AA13ED18B2D48D00DF504C /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 		57AA13F518B3AD5E00DF504C /* UIImage+Text.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Text.m"; sourceTree = "<group>"; };
 		57AA13F718B4E89B00DF504C /* Imagetext_save_load.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imagetext_save_load.h; sourceTree = "<group>"; };
 		57AA13F818B4E89B00DF504C /* Imagetext_save_load.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Imagetext_save_load.m; sourceTree = "<group>"; };
+		57AA13FA18B78E4D00DF504C /* menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = menu.plist; sourceTree = "<group>"; };
 		57AED63618ABB94A008A4A58 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSRuntime.framework; sourceTree = "<group>"; };
 		57AED63818ABB95D008A4A58 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		57AED63918ABB95D008A4A58 /* AWSSimpleDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSimpleDB.framework; sourceTree = "<group>"; };
@@ -353,17 +358,7 @@
 			path = ACEDrawingViewDemo;
 			sourceTree = "<group>";
 		};
-		57AA13EB18B2D48D00DF504C /* SVProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */,
-				57AA13ED18B2D48D00DF504C /* SVProgressHUD.h */,
-				57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */,
-			);
-			path = SVProgressHUD;
-			sourceTree = "<group>";
-		};
-		57AED64B18ABB9A1008A4A58 /* AWS_S3_SimpleDB */ = {
+		572CBBC418BAD1D9008E6D13 /* S3_SimpleDB_Core */ = {
 			isa = PBXGroup;
 			children = (
 				57AED63C18ABB994008A4A58 /* Const.h */,
@@ -384,6 +379,26 @@
 				57AED65918AD8EBE008A4A58 /* S3_simpleDB.m */,
 				57AED66518AF49CD008A4A58 /* Pair_Data.h */,
 				57AED66618AF49CD008A4A58 /* Pair_Data.m */,
+			);
+			name = S3_SimpleDB_Core;
+			sourceTree = "<group>";
+		};
+		57AA13EB18B2D48D00DF504C /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */,
+				57AA13ED18B2D48D00DF504C /* SVProgressHUD.h */,
+				57AA13EE18B2D48D00DF504C /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		57AED64B18ABB9A1008A4A58 /* AWS_S3_SimpleDB */ = {
+			isa = PBXGroup;
+			children = (
+				572CBBC418BAD1D9008E6D13 /* S3_SimpleDB_Core */,
+				572CBBC518BAD228008E6D13 /* S3_SimpleDB_save_load.h */,
+				572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */,
 			);
 			name = AWS_S3_SimpleDB;
 			sourceTree = "<group>";
@@ -436,6 +451,7 @@
 			isa = PBXGroup;
 			children = (
 				57BE451A187D9B01003F02B0 /* news_category.plist */,
+				57AA13FA18B78E4D00DF504C /* menu.plist */,
 			);
 			name = Resouce;
 			sourceTree = "<group>";
@@ -804,6 +820,7 @@
 				57BE450E187C2E3B003F02B0 /* darkPattern.png in Resources */,
 				57BE4517187C2E3B003F02B0 /* list@2x.png in Resources */,
 				57BE458D18837EA6003F02B0 /* News_View.xib in Resources */,
+				57AA13FB18B78E4D00DF504C /* menu.plist in Resources */,
 				57F077651852D28F00A5572C /* InfoPlist.strings in Resources */,
 				57BE4513187C2E3B003F02B0 /* list-landscape.png in Resources */,
 				57E96AD31858B5A200086BD8 /* News_Paper_View.xib in Resources */,
@@ -888,6 +905,7 @@
 				57BE455E1880F9F4003F02B0 /* ASICloudFilesContainerRequest.m in Sources */,
 				57BE45571880F9F4003F02B0 /* ASIFormDataRequest.m in Sources */,
 				57AA13F918B4E89B00DF504C /* Imagetext_save_load.m in Sources */,
+				572CBBC718BAD228008E6D13 /* S3_SimpleDB_save_load.m in Sources */,
 				57CDF8671876E5140010BAD7 /* UIImageTextView.m in Sources */,
 				57F391F7187645A6004210DB /* ILColorPickerView.m in Sources */,
 				57AED66118AF34B7008A4A58 /* SimpleDB_DataList.m in Sources */,

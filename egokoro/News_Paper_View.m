@@ -85,6 +85,7 @@
     UIImage_Text *imagetext = [[UIImage_Text alloc] init];
     imagetext.image = image;
     imagetext.text  = self.text;
+    imagetext.news_title = self.news_title;
     NSData *data1 = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
     [csl_ins store_NSData:data1 andkey:self.news_title];
 }

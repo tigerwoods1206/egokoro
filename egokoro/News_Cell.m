@@ -41,6 +41,7 @@
     Img_sl = [[Imagetext_save_load alloc] init];
     UIImage_Text *it = [Img_sl getImageText:NewsTitleText];
     self.NewsTitle.text = NewsTitleText;
+    self.NewsImage.image = nil;
     if (it!=nil && it.image!=nil) {
         [self.NewsImage setImage:it.image];
         self.NewsImage.contentMode = UIViewContentModeScaleAspectFill;

@@ -24,6 +24,7 @@
     NSDictionary *dicinfo;
     UIRefreshControl *refreshControl;
     AnimationController *_animationController;
+    int News_Get_Flag;
 }
 -(void)receiveInfo;
 -(void)receiveInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock;
@@ -35,7 +36,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    m_View = nil;
+    m_View    = nil;
     m_TblView = nil;
     
     m_rcMainSrcn = [[UIScreen mainScreen] applicationFrame];
@@ -43,6 +44,9 @@
     
     [self initView:@"main" withColor:[UIColor grayColor]];
     self.navigationController.delegate = self;
+    
+    //news flag
+    News_Get_Flag = NEW_NEWS;
     
     //refresh cont
     
@@ -111,16 +115,86 @@
     m_TblView.contentInset = insets;
 
     [m_View addSubview:m_TblView];
+
+    [self init_UIToolBar];
+
 }
 
+-(void)init_UIToolBar
+{
+    menuToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, m_rcMainSrcn.size.height-TABBAR_HEIGHT,
+                                                              m_rcMainSrcn.size.width, TABBAR_HEIGHT)];
+    
+    // ボタンを作成する
+    UIBarButtonItem * btn1 = [ [ UIBarButtonItem alloc ] initWithTitle:@"User_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_user_news: ) ];
+    UIBarButtonItem * btn2 = [ [ UIBarButtonItem alloc ] initWithTitle:@"My_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_my_news: ) ];
+    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Get_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_new_news: ) ];
+    //    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector( do_navigate: ) ];
+    // ボタン配列をツールバーに設定する
+    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn2, btn3, nil ];
+    [self.view addSubview:menuToolBar];
+}
+
+-(void)go_user_news:(id)sender
+{
+     News_Get_Flag = USER_NEWS;
+    [self receiveInfo];
+}
+-(void)go_my_news:(id)sender
+{
+    News_Get_Flag = MY_NEWS;
+    [self receiveInfo];
+}
+
+
+-(void)go_new_news:(id)sender
+{
+     News_Get_Flag = NEW_NEWS;
+    [self receiveInfo];
+}
+
+#pragma mark private method
+#pragma mark --get cell data
 -(void)receiveInfo
 {
-    [self receiveInfoWithCompletedBlock:^{
-        [m_TblView reloadData];
-        [refreshControl endRefreshing];
-    } errorBlock:nil];
+    if ( News_Get_Flag == NEW_NEWS) {
+        [self receiveInfoWithCompletedBlock:^{
+            [m_TblView reloadData];
+            [refreshControl endRefreshing];
+        } errorBlock:nil];
+    }
+    else if (News_Get_Flag == MY_NEWS) {
+        [self loadInfoWithCompletedBlock:^{
+            [m_TblView reloadData];
+            [refreshControl endRefreshing];
+        } errorBlock:nil];
+    }
+    else { // USER_NEWS
+        [self loadInfoWithCompletedBlock:^{
+            [m_TblView reloadData];
+            [refreshControl endRefreshing];
+        } errorBlock:nil];
+    }
 }
 
+-(void) loadInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+         //_items = [[NSMutableArray alloc] initWithArray:tmp_items];
+         [_items removeAllObjects];
+         Imagetext_save_load *isl = [[Imagetext_save_load alloc] init];
+         NSArray *imgtxt_arr = [isl getImageArray];
+         for (UIImage_Text *cur_imgtxt in imgtxt_arr) {
+             //Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+             Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+             tmp_item.title       = cur_imgtxt.news_title;
+             tmp_item.description = cur_imgtxt.text;
+             [_items addObject:tmp_item];
+         }
+         dispatch_sync(dispatch_get_main_queue(), block);
+     });
+}
+
+#pragma mark --get cell info from web api
 -(void) receiveInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -146,7 +220,7 @@
         for (NSArray *one_chan in channel_items) {
             
             set_description_flg = TRUE;
-            _item = [[Item alloc] initWithTable:m_TblView];
+            Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
             
             NSDictionary *chan_title = [one_chan valueForKey:@"title"];
             NSString *title = [chan_title valueForKey:@"text"];
@@ -168,26 +242,27 @@
             for (Item *one_item in _items) {
                 if (([title compare:one_item.title] == NSOrderedSame) &&
                     (one_item.description != nil)){
-                    _item.description = one_item.description;
-                    _item.date = one_item.date;
+                    tmp_item.description = one_item.description;
+                    tmp_item.date = one_item.date;
                     set_description_flg = FALSE;
                     break;
                 }
             }
             
-            _item.title = title;
-            _item.date = str_date_jpn;
+            tmp_item.title = title;
+            tmp_item.date = str_date_jpn;
             
             if (set_description_flg) {
                 //_item.description = @"";
                 NSDictionary *channel_link_ar = [one_chan valueForKey:@"link"];
                 NSString *channel_link = [channel_link_ar valueForKey:@"text"];
-                [Url_content get_content_form_url:channel_link reload_table:m_TblView setitem:_item];
+                [Url_content get_content_form_url:channel_link reload_table:m_TblView setitem:tmp_item];
             }
             
-            [tmp_items addObject:_item];
+            [tmp_items addObject:tmp_item];
         }
         
+        [_items removeAllObjects];
         _items = [[NSMutableArray alloc] initWithArray:tmp_items];
         dispatch_sync(dispatch_get_main_queue(), block);
     });
@@ -208,13 +283,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = @"Cell";
-    News_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    News_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    //CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     Item *item = _items[indexPath.row];
-    if (!cell) { // yes
-        // セルを作成
-        cell = [[News_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+//    if (!cell) { // yes
+//        // セルを作成
+//        cell = [[News_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+//    }
     
     //cell.contentView
     //cell.NewsTitle.text  = [item title];

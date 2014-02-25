@@ -22,7 +22,7 @@
 -(NSData *)get_Data:(NSDate *)date;
 -(NSData *)get_Data_from_key:(NSString *)key;
 
--(NSArray *)get_dataarray;
+-(NSArray *)get_dataarray:(int)before_day;
 -(void)del_allData;
 -(id)init;
 @end

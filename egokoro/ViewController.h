@@ -13,6 +13,9 @@
 #define TABBAR_HEIGHT           (49)
 #define NAVIGATIONBAR_HEIGHT    (44)
 #define AD_HEIGHT (50)
+#define MY_NEWS   0
+#define NEW_NEWS  1
+#define USER_NEWS 2
     
 @public
     enum TAG_TAB { TAG_TAB0, TAG_TAB1, TAG_TAB2, };
@@ -31,6 +34,8 @@
     UINavigationBar     *m_NavBar;
     UINavigationItem    *m_NavItem;
     UITableView         *m_TblView;
+    
+    UIToolbar *menuToolBar;
 }
 
 @property(retain)  NSMutableArray *items;
