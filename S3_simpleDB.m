@@ -61,10 +61,10 @@
         News_List *highScoreList = [[News_List alloc] init];
         [highScoreList addNews:highScore];
         */
-        AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
+        //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
         // SimpleDB_DataList  *sDB_DataList  = [[SimpleDB_DataList alloc] initWithProperties:data andMainkey:key];
         SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-        [sDB_DataList addData:any_data];
+        //[sDB_DataList addData:any_data];
     });
 
 }

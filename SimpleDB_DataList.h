@@ -18,6 +18,7 @@
     AmazonSimpleDBClient *sdbClient;
     NSString             *nextToken;
     NSData               *_archived_Data;
+    NSArray              *Propnames;
     NSString             *mainKey;
     int                  sortMethod;
 }
@@ -26,7 +27,7 @@
 @property (nonatomic, strong) NSString *nextToken;
 
 -(id)initWithSortMethod:(int)theSortMethod;
--(id)initWithProperties:(NSData *)archived_Data andMainkey:(NSString *)key;
+-(id)initWithProperties:(NSArray *)propnames andMainkey:(NSString *)key;
 -(int)DataCount;
 -(NSArray *)getDatas;
 -(NSArray *)getNextPageOfData;

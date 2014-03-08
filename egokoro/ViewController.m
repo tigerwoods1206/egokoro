@@ -16,6 +16,7 @@
 #import "Item.h"
 #import "News_Cell.h"
 #import "Imagetext_save_load.h"
+#import "AWS_Image_save_load.h"
 
 @interface ViewController () <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 {
@@ -129,9 +130,10 @@
     UIBarButtonItem * btn1 = [ [ UIBarButtonItem alloc ] initWithTitle:@"User_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_user_news: ) ];
     UIBarButtonItem * btn2 = [ [ UIBarButtonItem alloc ] initWithTitle:@"My_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_my_news: ) ];
     UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Get_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_new_news: ) ];
+     UIBarButtonItem *btn4 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector( clear: ) ];
     //    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector( do_navigate: ) ];
     // ボタン配列をツールバーに設定する
-    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn2, btn3, nil ];
+    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn2, btn3, btn4, nil ];
     [self.view addSubview:menuToolBar];
 }
 
@@ -146,12 +148,20 @@
     [self receiveInfo];
 }
 
-
 -(void)go_new_news:(id)sender
 {
      News_Get_Flag = NEW_NEWS;
     [self receiveInfo];
 }
+
+-(void)clear:(id)sender
+{
+    AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];
+    [awssl.S3sdb Clear_All_Data];
+    News_Get_Flag = NEW_NEWS;
+    [self receiveInfo];
+}
+
 
 #pragma mark private method
 #pragma mark --get cell data
@@ -170,13 +180,40 @@
         } errorBlock:nil];
     }
     else { // USER_NEWS
-        [self loadInfoWithCompletedBlock:^{
-            [m_TblView reloadData];
-            [refreshControl endRefreshing];
+        [self loadInfo_AWS_WithCompletedBlock:^{
+ //           [m_TblView reloadData];
+//            [refreshControl endRefreshing];
         } errorBlock:nil];
     }
 }
 
+
+#pragma mark --get cell info from AWS S3 and SimpleDB
+-(void) loadInfo_AWS_WithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        //_items = [[NSMutableArray alloc] initWithArray:tmp_items];
+        [_items removeAllObjects];
+        AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];
+        [awssl getImageArray:
+         ^{
+             NSArray *imgarr = awssl.S3sdb.Data_Arr;
+             for (NSData *cur_imgtxt_data in imgarr) {
+                 //Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+                 Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+                 UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:cur_imgtxt_data];
+                 [tmp_item setNews_imagetext:imgtxt];
+                 [_items addObject:tmp_item];
+             }
+             [m_TblView reloadData];
+             [refreshControl endRefreshing];
+           // dispatch_sync(dispatch_get_main_queue(), block);
+         }
+         ];
+        
+    });
+}
+
+#pragma mark --get cell info from CoreData
 -(void) loadInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
          //_items = [[NSMutableArray alloc] initWithArray:tmp_items];
@@ -186,8 +223,8 @@
          for (UIImage_Text *cur_imgtxt in imgtxt_arr) {
              //Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
              Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
-             tmp_item.title       = cur_imgtxt.news_title;
-             tmp_item.description = cur_imgtxt.text;
+             [tmp_item setNews_imagetext:cur_imgtxt];
+             
              [_items addObject:tmp_item];
          }
          dispatch_sync(dispatch_get_main_queue(), block);
@@ -250,7 +287,7 @@
             }
             
             tmp_item.title = title;
-            tmp_item.date = str_date_jpn;
+            tmp_item.date  = str_date_jpn;
             
             if (set_description_flg) {
                 //_item.description = @"";
@@ -294,9 +331,7 @@
     
     //cell.contentView
     //cell.NewsTitle.text  = [item title];
-    [cell setNewsTitleText:[item title]];
-    cell.NewsDay.text    = [item date];
-    cell.NewsDetail.text = [item description];
+    [cell setNewsItem:item];
     //[cell.NewsDetail cutOutframeText];
 
 //    cell.textLabel.text = [item title];
@@ -320,6 +355,7 @@
    // NSLog(@"%s",item.description);
     [news_view set_text:item.description];
     [news_view set_newstitle:item.title];
+    [news_view setPub_day:item.date];
 
     [self.navigationController pushViewController:news_view animated:YES];
 }

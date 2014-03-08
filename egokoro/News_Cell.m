@@ -8,6 +8,7 @@
 
 #import "News_Cell.h"
 #import "Imagetext_save_load.h"
+#import "AWS_Image_save_load.h"
 
 @interface News_Cell ()
 {
@@ -35,6 +36,20 @@
     // Drawing code
 }
 */
+
+-(void)setNewsItem:(Item *)NewsItem
+{
+    self.NewsTitle.text  = NewsItem.title;
+    self.NewsImage.image = NewsItem.news_image;
+    self.NewsDay.text    = NewsItem.date;
+    self.NewsDetail.text = NewsItem.description;
+    
+    if ( NewsItem.news_image!=nil) {
+        [self.NewsImage setImage:NewsItem.news_image];
+        self.NewsImage.contentMode = UIViewContentModeScaleAspectFill;
+        self.NewsImage.clipsToBounds = YES;
+    }
+}
 
 -(void)setNewsTitleText:(NSString *)NewsTitleText
 {

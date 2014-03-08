@@ -11,21 +11,22 @@
 #import "Const.h"
 #import "Create_Query.h"
 
-#define HIGH_SCORE_DOMAIN    @"News"
-
-#define S3DATA_ATTRIBUTE     @"s3data"
+//#define S3DATA_ATTRIBUTE     @"s3data"
 #define USER_ATTRIBUTE       @"user"
-#define PUBLISHDAY_ATTRIBUTE @"publish_day"
+#define PUBLISHDAY_ATTRIBUTE @"Pubday"
 
 #define POSTDAY_ATTRIBUTE    @"post_day"
 #define TITLE_ATTRIBUTE      @"title"
 
 
-#define COUNT_QUERY          @"select count(*) from News"
+#define COUNT_QUERY          @"select count(*) from Datas"
 
-#define PUBDAY_SORT_QUERY    @"select s3data, user, title, publish_day, post_day from News where publish_day > '140130' order by publish_day asc"
-#define USER_SORT_QUERY     @"select s3data, user, title, publish_day, post_day from News where user >= '' order by user desc"
-#define NO_SORT_QUERY        @"select s3data, user, title, publish_day, post_day from News"
+#define PUBDAY_SORT_QUERY    @"select s3data, user, title, publish_day, post_day from Datas where publish_day > '140130' order by publish_day asc"
+#define USER_SORT_QUERY     @"select s3data, user, title, publish_day, post_day from Datas where user >= '' order by user desc"
+#define NO_SORT_QUERY        @"select s3data, user, title, publish_day, post_day from Datas"
+
+//#define USER_QUERY  @"select s3Data, User, Pubday, from Datas where Pubday > '1402231806' order by Pubday asc"
+#define USER_QUERY  @"select s3Data from Datas  where Pubday > '1402231806' order by Pubday asc"
 
 
 @implementation SimpleDB_DataList
@@ -65,7 +66,7 @@
     return self;
 }
 
--(id)initWithProperties:(NSData *)archived_Data andMainkey:(NSString *)key
+-(id)initWithProperties:(NSArray *)propnames andMainkey:(NSString *)key
 {
     self = [super init];
     if (self)
@@ -75,8 +76,9 @@
         sdbClient.endpoint = [AmazonEndpoints sdbEndpoint:AP_NORTHEAST_1];
         
         self.nextToken = nil;
-        _archived_Data = archived_Data;
+        _archived_Data = nil;
         mainKey = key;
+        Propnames = propnames;
         sortMethod     = NO_SORT;
     }
     
@@ -127,7 +129,7 @@
      */
     
     return [[AnyData_forSimpleDB alloc] initWithAttributes:response.attributes
-                                              andPropNames:[self getClassProperties:_archived_Data]
+                                              andPropNames:Propnames
                                                 andMainKey:mainKey];
 }
 
@@ -152,10 +154,13 @@
             
         default: {
             //query = NO_SORT_QUERY;
-            query = [Create_Query create_query:[self getClassProperties:_archived_Data]
-                                  and_main_key:mainKey
-                                   and_day_key:@"publish_day"
+            query = USER_QUERY;
+            /*
+            query = [Create_Query create_query:Propnames
+                                  and_main_key:S3DATA_ATTRIBUTE
+                                   and_day_key:PUBLISHDAY_ATTRIBUTE
                                   and_last_day:[NSDate dateWithTimeIntervalSinceNow:-86400*7]];
+             */
         }
     }
     
@@ -165,17 +170,22 @@
         selectRequest.nextToken = self.nextToken;
     }
     
-    
-    SimpleDBSelectResponse *selectResponse = [sdbClient select:selectRequest];
-    if(selectResponse.error != nil)
-    {
-        NSLog(@"Error: %@", selectResponse.error);
-        return [NSArray array];
+    @try{
+        SimpleDBSelectResponse *selectResponse = [sdbClient select:selectRequest];
+        if(selectResponse.error != nil)
+        {
+            NSLog(@"Error: %@", selectResponse.error);
+            return [NSArray array];
+        }
+        
+        self.nextToken = selectResponse.nextToken;
+        NSArray *retarr;
+        retarr =  [self convertItemsToData:selectResponse.items];
+        return retarr;
     }
-    
-    self.nextToken = selectResponse.nextToken;
-    
-    return [self convertItemsToData:selectResponse.items];
+    @catch (NSError *error) {
+        NSLog(@"Error: %@", error);
+    }
 }
 
 /*
@@ -197,8 +207,8 @@
 -(void)addData:(AnyData_forSimpleDB *)theData
 {
     NSMutableArray *attributes = [theData get_Attribute_Array];
-    
-    SimpleDBPutAttributesRequest *putAttributesRequest = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:theData.Mainkey andAttributes:attributes];
+    mainKey = theData.s3Data;
+    SimpleDBPutAttributesRequest *putAttributesRequest = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:theData.s3Data andAttributes:attributes];
     
     SimpleDBPutAttributesResponse *putAttributesResponse = [sdbClient putAttributes:putAttributesRequest];
     if(putAttributesResponse.error != nil)
@@ -215,7 +225,7 @@
 -(void)removeData:(AnyData_forSimpleDB *)theData
 {
     @try {
-        SimpleDBDeleteAttributesRequest *deleteItem = [[SimpleDBDeleteAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:[theData get_value:theData.Mainkey]];
+        SimpleDBDeleteAttributesRequest *deleteItem = [[SimpleDBDeleteAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:[theData get_value:theData.s3Data]];
         [sdbClient deleteAttributes:deleteItem];
     }
     @catch (NSException *exception) {
@@ -261,7 +271,7 @@
  */
 -(NSArray *)convertItemsToData:(NSArray *)theItems
 {
-    NSMutableArray *highScores = [[NSMutableArray alloc] initWithCapacity:[theItems count]];
+    NSMutableArray *highScores = [[NSMutableArray alloc] init];
     for (SimpleDBItem *item in theItems) {
         [highScores addObject:[self convertSimpleDBItemToData:item]];
     }
@@ -281,11 +291,12 @@
      andpostDay:(NSInteger)postDay
      andpublishDat:(NSInteger)publishDay;
      */
+    AnyData_forSimpleDB *adb;
+    adb = [[AnyData_forSimpleDB alloc] initWithSimpleDBItem:theItem
+                                               andPropNames:Propnames
+                                                 andMainKey:mainKey];
     
-    
-    return [[AnyData_forSimpleDB alloc] initWithSimpleDBItem:theItem
-                                                andPropNames:[self getClassProperties:_archived_Data]
-                                                andMainKey:mainKey];
+    return adb;
     
 }
 

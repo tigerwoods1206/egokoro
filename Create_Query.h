@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Codable.h"
 
+#define HIGH_SCORE_DOMAIN    @"Datas"
+
 @interface Create_Query : NSObject
 
 +(NSString *)create_query:(NSDate *)lastday;

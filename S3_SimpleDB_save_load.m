@@ -7,9 +7,9 @@
 //
 
 #import "S3_SimpleDB_save_load.h"
-#import "SimpleDB_DataList.h"
 #import "Const.h"
 #import "Create_Query.h"
+#import <AWSS3/AWSS3.h>
 
 @implementation S3_SimpleDB_save_load
 
@@ -18,13 +18,17 @@
     self = [super init];
     if(self)
     {
-        self.s3 = [S3_init init_S3];
+        //self.Data_Arr = [[NSMutableArray alloc] init];
+        [self s3sdb_init];
     }
     return self;
 }
 
 -(void)Save_Data:(NSData *)data
 {
+   
+    [self s3sdb_init];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         /*
@@ -38,10 +42,12 @@
         NSString *key = [Const makeUniqueString];
         [self uploadData:data and_key:key];
         
-        AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
+        AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andUser:@"isao" andPubday:[Const nowKeystring]];
+        //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
        // SimpleDB_DataList  *sDB_DataList  = [[SimpleDB_DataList alloc] initWithProperties:data andMainkey:key];
-        SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-        [sDB_DataList addData:any_data];
+        //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
+        //[self.sdb createDataDomain];
+        [self.sdb addData:any_data];
     });
 
 }
@@ -98,27 +104,41 @@
 
 
 
--(NSData *)Load_Data:(NSString *)key
+-(void)Load_Data:(NSString *)key block:(dispatch_block_t)block
 {
-    SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-    AnyData_forSimpleDB *any_data = [sDB_DataList getS3Data:key];
-    NSString *s3key = [any_data get_value:key];
-   // [self.s3
-    return nil;
+    [self s3sdb_init];
+    //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
+    AnyData_forSimpleDB *any_data = [self.sdb getS3Data:key];
+    NSString *s3key = [any_data get_value:any_data.s3Data];
+    [self Download_S3:s3key block:block];
 }
 
+-(void)Load_Data_Arr:(dispatch_block_t)block
+{
+    [self s3sdb_init];
+     //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
+   // NSArray *arr = [self.sdb getNextPageOfData];
+  //  int count = [self.sdb DataCount];
+    NSArray *arr = [self.sdb getDatas];
+    
+    for (AnyData_forSimpleDB *adb in arr) {
+        NSString *s3key = adb.s3Data;
+        [self Download_S3:s3key block:block];
+    }
+   //  dispatch_sync(dispatch_get_main_queue(), block);
+}
      
--(NSData *)Download_S3:(NSString *)s3_key
+-(void)Download_S3:(NSString *)s3_key block:(dispatch_block_t)block
 {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         
         S3GetObjectRequest* getRequest = [[S3GetObjectRequest alloc] initWithKey:s3_key withBucket:[Const pictureBucket]];
         getRequest.contentType = @"image/jpeg";
-        // getRequest.delegate = self;
+      //  getRequest.delegate = self;
         
         S3GetObjectResponse* getResponse = [self.s3 getObject:getRequest];
-        
+       // return;
         if(getResponse == nil)
         {
             if(getResponse.error != nil)
@@ -134,19 +154,11 @@
         }
         else
         {
-            //  NSLog(@"%@",getResponse.body);
-            /*
-             UIImage* down = [[UIImage alloc] initWithData:getResponse.body];
-             [uimgv setImage:down];
-             */
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Display the URL in Safari
-                // [[UIApplication sharedApplication] openURL:url];
-                UIImage* down = [[UIImage alloc] initWithData:getResponse.body];
-               // [uimgv setImage:down];
-            });
-            
+            NSData *down = getResponse.body;
+            NSMutableArray *arr = [[NSMutableArray alloc] init];
+            [arr addObject:down];
+            self.Data_Arr = arr;
+            dispatch_sync(dispatch_get_main_queue(), block);
         }
         
     });
@@ -154,6 +166,37 @@
     
 }
 
+-(void)Clear_All_Data
+{
+    [self s3sdb_init];
+    NSArray *arr = [self.sdb getDatas];
+    
+    for (AnyData_forSimpleDB *adb in arr) {
+         NSString *s3key = adb.s3Data;
+        [self deleteData:s3key];
+    }
+    
+    [self.sdb clearData];
+}
+
+-(void)deleteData:(NSString *)key
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        
+        [self.s3 deleteObjectWithKey:key withBucket:[Const pictureBucket]];
+    });
+}
+
+-(void)s3sdb_init
+{
+    if (self.s3 == nil) {
+        self.s3  = [S3_init init_S3];
+    }
+    AnyData_forSimpleDB *dum = [[AnyData_forSimpleDB alloc] init];
+    NSArray *props = [dum propertyNames];
+    self.sdb = [[SimpleDB_DataList alloc] initWithProperties:props andMainkey:nil];
+}
 
 
 @end

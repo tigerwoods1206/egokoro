@@ -13,6 +13,7 @@
 @interface UIImage_Text : Codable
 
 @property UIImage  *image;
+@property NSString *pub_day;
 @property NSString *text;
 @property NSString *news_title;
 

@@ -73,6 +73,14 @@
     return self;
 }
 
+-(void)setNews_imagetext:(UIImage_Text *)news_imagetext
+{
+    self.title       = news_imagetext.news_title;
+    self.description = news_imagetext.text;
+    self.news_image  = news_imagetext.image;
+    self.date        = news_imagetext.pub_day;
+}
+
 -(void)dealloc
 {
     [self removeObserver:self forKeyPath:@"description"];

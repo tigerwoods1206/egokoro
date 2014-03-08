@@ -8,10 +8,12 @@
 
 #import "News_Paper_View.h"
 #import "SVProgressHUD.h"
+#import "AWS_Image_save_load.h"
 
 @interface News_Paper_View ()
 {
     CoreData_save_load *csl_ins;
+    AWS_Image_save_load *aws_ins;
     int Setimage_from_ACE;
     ACEViewController *_paint_view;
 }
@@ -36,8 +38,10 @@
     // Do any additional setup after loading the view from its nib.
     Setimage_from_ACE = FALSE;
     csl_ins = [[CoreData_save_load alloc] init];
+    aws_ins = [[AWS_Image_save_load alloc] init];
    // [csl_ins del_allData];
     _News_Text_View.text = self.text;
+    self.title = self.news_title;
     
     if(!Setimage_from_ACE){
         if (_paint_view != nil) {
@@ -110,10 +114,10 @@
     if (_paint_view!=nil) {
         imagetext.image = _paint_view.drawingView.image;
         imagetext.text  = self.text;
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
-        [csl_ins store_NSData:data andkey:self.news_title];
-    }
-   
+        imagetext.news_title  = self.news_title;
+        imagetext.pub_day = self.Pub_day;
+        [aws_ins setImageText:imagetext and_key:self.news_title];
+    }   
 }
 
 #pragma mark private mathod

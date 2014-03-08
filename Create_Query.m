@@ -29,20 +29,32 @@
     NSString *strNow = [df stringFromDate:lastday];
     
     //NSArray *props = [data propertyNames];
-    NSString *query = [NSString stringWithFormat:@"select "];
+    NSMutableString *query = [NSMutableString stringWithCapacity: 0];
+   // NSMutableString *query = [NSMutableString stringWithFormat:@"select "];
+    [query appendString:@"select "];
+    //[query appendFormat:@"%@, ", main_key];
+ 
+    /*
     for (NSString *prop in properties) {
         if ([prop compare:main_key]) {
-            [query stringByAppendingFormat:@"%@, ", main_key ];
+            [query appendFormat:@"%@, ", main_key ];
+            break;
         }
     }
     
     for (NSString *prop in properties) {
         if (![prop compare:main_key]) {
-            [query stringByAppendingFormat:@"%@, ", prop];
+            [query appendFormat:@"%@, ", prop];
         }
     }
+    */
+    for (NSString *prop in properties) {
+        
+        [query appendFormat:@"%@, ", prop];
+        
+    }
     
-    [query stringByAppendingFormat:@"from News where %@ > '%@' order by %@ asc",day_key,strNow,day_key];
+    [query appendFormat:@"from %@ where %@ > '%@' order by %@ asc",HIGH_SCORE_DOMAIN,day_key,strNow,day_key];
     
     return query;
 }

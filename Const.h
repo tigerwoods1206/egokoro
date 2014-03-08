@@ -16,7 +16,7 @@
 #define CREDENTIALS_ERROR_TITLE    @"Missing Credentials"
 #define CREDENTIALS_ERROR_MESSAGE  @"AWS Credentials not configured correctly.  Please review the README file."
 
-#define PICTURE_BUCKET         @"picture-bucket"
+#define PICTURE_BUCKET         @"imagetext-bucket"
 
 @interface Const:NSObject {
 }

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIImageTextView.h"
+#import "Item.h"
 
 @interface News_Cell : UITableViewCell
 
@@ -17,5 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *NewsImage;
 
 @property (nonatomic, strong) NSString *NewsTitleText;
+@property (nonatomic, strong) Item *NewsItem;
 
 @end

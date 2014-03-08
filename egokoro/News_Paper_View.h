@@ -26,6 +26,7 @@
 //@property ACEViewController *paint_view;
 @property NSString *text;
 @property NSString *news_title;
+@property NSString *Pub_day;
 //@property ACEViewController *paint_view;
 
 -(void)set_text:(NSString *)detail_text;
