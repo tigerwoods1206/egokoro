@@ -111,8 +111,8 @@
 - (IBAction)post_newsImage:(id)sender
 {
     UIImage_Text *imagetext = [[UIImage_Text alloc] init];
-    if (_paint_view!=nil) {
-        imagetext.image = _paint_view.drawingView.image;
+    if (_News_Text_View.imgview.image!=nil) {
+        imagetext.image = _News_Text_View.imgview.image;
         imagetext.text  = self.text;
         imagetext.news_title  = self.news_title;
         imagetext.pub_day = self.Pub_day;

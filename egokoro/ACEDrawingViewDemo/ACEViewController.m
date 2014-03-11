@@ -83,6 +83,11 @@ ILColorPickerLayoutBottomExampleControllerDelegate
 //    });
 }
 
+- (IBAction)back:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)undo:(id)sender
 {
     [self.drawingView undoLatestStep];

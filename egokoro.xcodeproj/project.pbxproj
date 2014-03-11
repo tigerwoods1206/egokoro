@@ -13,6 +13,7 @@
 		570B91E2185FC947008CF042 /* ACEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B91D5185FC947008CF042 /* ACEViewController.m */; };
 		570B91E6185FC947008CF042 /* ACEViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 570B91D9185FC947008CF042 /* ACEViewController.xib */; };
 		570B91EB1861192A008CF042 /* Open_YahooURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B91EA1861192A008CF042 /* Open_YahooURL.m */; };
+		57273C3E18CE02510060B673 /* Save_Props.m in Sources */ = {isa = PBXBuildFile; fileRef = 57273C3D18CE02510060B673 /* Save_Props.m */; };
 		572CBBC718BAD228008E6D13 /* S3_SimpleDB_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */; };
 		572CBBCA18BEB498008E6D13 /* AWS_Image_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CBBC918BEB497008E6D13 /* AWS_Image_save_load.m */; };
 		57AA13EF18B2D48D00DF504C /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 57AA13EC18B2D48D00DF504C /* SVProgressHUD.bundle */; };
@@ -135,6 +136,8 @@
 		570B91DA185FC947008CF042 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ACEViewController.xib; sourceTree = "<group>"; };
 		570B91E91861192A008CF042 /* Open_YahooURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Open_YahooURL.h; sourceTree = "<group>"; };
 		570B91EA1861192A008CF042 /* Open_YahooURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Open_YahooURL.m; sourceTree = "<group>"; };
+		57273C3C18CE02510060B673 /* Save_Props.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Save_Props.h; sourceTree = "<group>"; };
+		57273C3D18CE02510060B673 /* Save_Props.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Save_Props.m; sourceTree = "<group>"; };
 		572CBBC518BAD228008E6D13 /* S3_SimpleDB_save_load.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S3_SimpleDB_save_load.h; sourceTree = "<group>"; };
 		572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = S3_SimpleDB_save_load.m; sourceTree = "<group>"; };
 		572CBBC818BEB497008E6D13 /* AWS_Image_save_load.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWS_Image_save_load.h; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 				572CBBC418BAD1D9008E6D13 /* S3_SimpleDB_Core */,
 				572CBBC518BAD228008E6D13 /* S3_SimpleDB_save_load.h */,
 				572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */,
+				57273C3C18CE02510060B673 /* Save_Props.h */,
+				57273C3D18CE02510060B673 /* Save_Props.m */,
 			);
 			name = AWS_S3_SimpleDB;
 			sourceTree = "<group>";
@@ -880,6 +885,7 @@
 				57BE45641880F9F4003F02B0 /* ASIS3BucketObject.m in Sources */,
 				57F0776B1852D28F00A5572C /* AppDelegate.m in Sources */,
 				57E96AD21858B5A200086BD8 /* News_Paper_View.m in Sources */,
+				57273C3E18CE02510060B673 /* Save_Props.m in Sources */,
 				572CBBCA18BEB498008E6D13 /* AWS_Image_save_load.m in Sources */,
 				570B91DE185FC947008CF042 /* ACEDrawingTools.m in Sources */,
 				57AED66718AF49CD008A4A58 /* Pair_Data.m in Sources */,

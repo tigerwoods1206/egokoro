@@ -32,6 +32,7 @@
 - (IBAction)redo:(id)sender;
 - (IBAction)clear:(id)sender;
 - (IBAction)takeScreenshot:(id)sender;
+- (IBAction)back:(id)sender;
 
 // settings
 - (IBAction)colorChange:(id)sender;

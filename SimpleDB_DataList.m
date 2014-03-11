@@ -9,7 +9,6 @@
 #import "SimpleDB_DataList.h"
 #import <AWSRuntime/AWSRuntime.h>
 #import "Const.h"
-#import "Create_Query.h"
 
 //#define S3DATA_ATTRIBUTE     @"s3data"
 #define USER_ATTRIBUTE       @"user"
@@ -27,6 +26,7 @@
 
 //#define USER_QUERY  @"select s3Data, User, Pubday, from Datas where Pubday > '1402231806' order by Pubday asc"
 #define USER_QUERY  @"select s3Data from Datas  where Pubday > '1402231806' order by Pubday asc"
+#define TITLE_QUERY  @"select s3Data, title from Datas where title == 'sample' "
 
 
 @implementation SimpleDB_DataList
@@ -187,6 +187,34 @@
         NSLog(@"Error: %@", error);
     }
 }
+
+-(NSArray *)getDatas:(NSString *)query
+{
+    
+    SimpleDBSelectRequest *selectRequest = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
+    selectRequest.consistentRead = YES;
+    if (self.nextToken != nil) {
+        selectRequest.nextToken = self.nextToken;
+    }
+    
+    @try{
+        SimpleDBSelectResponse *selectResponse = [sdbClient select:selectRequest];
+        if(selectResponse.error != nil)
+        {
+            NSLog(@"Error: %@", selectResponse.error);
+            return [NSArray array];
+        }
+        
+        self.nextToken = selectResponse.nextToken;
+        NSArray *retarr;
+        retarr =  [self convertItemsToData:selectResponse.items];
+        return retarr;
+    }
+    @catch (NSError *error) {
+        NSLog(@"Error: %@", error);
+    }
+}
+
 
 /*
  * If a 'nextToken' was returned on the previous query execution, use the next token to get the next batch of items.

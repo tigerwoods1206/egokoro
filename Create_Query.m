@@ -59,4 +59,11 @@
     return query;
 }
 
++(NSString *)create_title_query:(NSString *)title
+{
+    NSString *query;
+    query = [NSString stringWithFormat:@"select %@, news_title from %@ where news_title = '%@'",S3DATA_ATTRIBUTE,HIGH_SCORE_DOMAIN,title];
+    return query;
+}
+
 @end

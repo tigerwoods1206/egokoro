@@ -8,6 +8,7 @@
 
 #import "Codable.h"
 #import "AnyData_forSimpleDB.h"
+#import "Create_Query.h"
 
 #define NO_SORT        0
 #define PLAYER_SORT    1
@@ -30,6 +31,7 @@
 -(id)initWithProperties:(NSArray *)propnames andMainkey:(NSString *)key;
 -(int)DataCount;
 -(NSArray *)getDatas;
+-(NSArray *)getDatas:(NSString *)query;
 -(NSArray *)getNextPageOfData;
 -(void)addData:(AnyData_forSimpleDB *)theData;
 -(void)removeData:(AnyData_forSimpleDB *)theData;

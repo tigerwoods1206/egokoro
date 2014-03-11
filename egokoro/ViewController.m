@@ -324,18 +324,8 @@
     //CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     Item *item = _items[indexPath.row];
-//    if (!cell) { // yes
-//        // セルを作成
-//        cell = [[News_Cell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-//    }
-    
-    //cell.contentView
-    //cell.NewsTitle.text  = [item title];
-    [cell setNewsItem:item];
-    //[cell.NewsDetail cutOutframeText];
 
-//    cell.textLabel.text = [item title];
-//    cell.detailTextLabel.text = [item description];
+    [cell setNewsItem:item];
     return cell;
 }
 

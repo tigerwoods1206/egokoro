@@ -24,7 +24,7 @@
     return self;
 }
 
--(void)Save_Data:(NSData *)data
+-(void)Save_Data:(NSData *)data and_props:(Save_Props *)prop
 {
    
     [self s3sdb_init];
@@ -41,8 +41,9 @@
         
         NSString *key = [Const makeUniqueString];
         [self uploadData:data and_key:key];
-        
-        AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andUser:@"isao" andPubday:[Const nowKeystring]];
+        prop.s3Data = key;
+        AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andProps:prop];
+        //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andUser:prop.user andPubday:[Const nowKeystring] and_title:prop.news_title];
         //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
        // SimpleDB_DataList  *sDB_DataList  = [[SimpleDB_DataList alloc] initWithProperties:data andMainkey:key];
         //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
@@ -126,6 +127,21 @@
         [self Download_S3:s3key block:block];
     }
    //  dispatch_sync(dispatch_get_main_queue(), block);
+}
+
+-(void)Load_Data_Arr:(dispatch_block_t)block add_query:(NSString *)query
+{
+    [self s3sdb_init];
+    //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
+    // NSArray *arr = [self.sdb getNextPageOfData];
+    //  int count = [self.sdb DataCount];
+    NSArray *arr = [self.sdb getDatas:query];
+    
+    for (AnyData_forSimpleDB *adb in arr) {
+        NSString *s3key = adb.s3Data;
+        [self Download_S3:s3key block:block];
+    }
+    //  dispatch_sync(dispatch_get_main_queue(), block);
 }
      
 -(void)Download_S3:(NSString *)s3_key block:(dispatch_block_t)block

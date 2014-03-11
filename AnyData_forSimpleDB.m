@@ -11,7 +11,7 @@
 
 @implementation AnyData_forSimpleDB
 
--(id)initWithKeys:(NSString *)key andUser:(NSString *)user andPubday:(NSString *)pubday
+-(id)initWithKeys:(NSString *)key andUser:(NSString *)user andPubday:(NSString *)pubday and_title:(NSString *)title
 {
     self = [super init];
     if (self)
@@ -19,6 +19,7 @@
         self.s3Data    = key;
         self.User      = user;
         self.Pubday    = pubday;
+        self.title     = title;
         // self_archived_Data = archived_Data;
         pairdata_Array = nil;
         NSMutableArray *getpro = [[NSMutableArray alloc] init];
@@ -33,6 +34,30 @@
         pairdata_Array = getpro;
     }
     return self;
+}
+
+-(id)initWithKeys:(NSString *)key andProps:(Save_Props *)props
+{
+    self = [super init];
+    if (self)
+    {
+       
+        // self_archived_Data = archived_Data;
+        self.s3Data    = key;
+        pairdata_Array = nil;
+        NSMutableArray *getpro = [[NSMutableArray alloc] init];
+        
+        for (NSString *pro in [props propertyNames]) {
+            Pair_Data *pair = [[Pair_Data alloc] init];
+            pair.prop  = pro;
+            pair.value = [props valueForKey:pro];
+            [getpro addObject:pair];
+        }
+        
+        pairdata_Array = getpro;
+    }
+    return self;
+
 }
 
 -(id)initWithAttributes:(NSArray *)Attributes andPropNames:(NSArray *)props andMainKey:(NSString *)key
@@ -67,7 +92,7 @@
     self = [super init];
     if (self)
     {
-        //self.s3Data = key;
+        self.s3Data = key;
         self_archived_Data = nil;
         
         NSMutableArray *getpro = [[NSMutableArray alloc] init];

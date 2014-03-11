@@ -49,6 +49,9 @@
         self.NewsImage.contentMode = UIViewContentModeScaleAspectFill;
         self.NewsImage.clipsToBounds = YES;
     }
+    else {
+        [self load_set_AWSImage:self.NewsTitle.text errorBlock:nil];
+    }
 }
 
 -(void)setNewsTitleText:(NSString *)NewsTitleText
@@ -63,5 +66,35 @@
         self.NewsImage.clipsToBounds = YES;
     }
 }
+
+-(void) load_set_AWSImage:(NSString *)title errorBlock:(dispatch_block_t)errorBlock{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];
+        [awssl getImageArray_with_title:title add_block:
+         ^{
+             
+             
+             NSArray *imgarr = awssl.S3sdb.Data_Arr;
+             int rand_num = random() % [imgarr count];
+             
+             int i_count = 0;
+             for (NSData *cur_imgtxt_data in imgarr) {
+                 if (i_count == rand_num) {
+                     UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:cur_imgtxt_data];
+                     [self.NewsImage setImage:imgtxt.image];
+                     //[self setNeedsLayout];
+                     break;
+                 }
+                 i_count++;
+             }
+             
+             // dispatch_sync(dispatch_get_main_queue(), block);
+         }
+         ];
+        
+    });
+}
+
 
 @end

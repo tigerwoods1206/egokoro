@@ -16,6 +16,7 @@
 @property (nonatomic,retain) S3_SimpleDB_save_load *S3sdb;
 
 -(void)getImageText:(NSString *)title block:(dispatch_block_t)block;
+-(void)getImageArray_with_title:(NSString *)title add_block:(dispatch_block_t)block;
 -(void)setImageText:(UIImage_Text *)imagetext and_key:(NSString *)title;
 -(void)getImageArray:(dispatch_block_t)block;
 -(UIImage_Text *)unarchived_NSData:(NSData *)data;

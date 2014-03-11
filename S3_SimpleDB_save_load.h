@@ -17,9 +17,10 @@
 @property (nonatomic, retain) SimpleDB_DataList *sdb;
 @property (nonatomic, retain) NSArray *Data_Arr;
 
--(void)Save_Data:(NSData *)data;
+-(void)Save_Data:(NSData *)data and_props:(Save_Props *)prop;
 -(void)Load_Data:(NSString *)key block:(dispatch_block_t)block;
 -(void)Load_Data_Arr:(dispatch_block_t)block;
+-(void)Load_Data_Arr:(dispatch_block_t)block add_query:(NSString *)query;
 -(void)Clear_All_Data;
 
 @end

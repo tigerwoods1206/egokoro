@@ -31,11 +31,21 @@
     [self.S3sdb Load_Data_Arr:block];
 }
 
+-(void)getImageArray_with_title:(NSString *)title add_block:(dispatch_block_t)block
+{
+    [self init_s3sdb];
+    [self.S3sdb Load_Data_Arr:block add_query:[Create_Query create_title_query:title]];
+}
+
 -(void)setImageText:(UIImage_Text *)imagetext and_key:(NSString *)title
 {
     [self init_s3sdb];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
-    [self.S3sdb Save_Data:data];
+    Save_Props *props = [[Save_Props alloc] init];
+    props.news_title = title;
+    props.user = @"isao";
+    props.pubday = [Const nowKeystring];
+    [self.S3sdb Save_Data:data and_props:props];
 }
 
 -(UIImage_Text *)unarchived_NSData:(NSData *)data

@@ -18,6 +18,9 @@
 
 #define PICTURE_BUCKET         @"imagetext-bucket"
 
+#define S3DATA_ATTRIBUTE     @"s3Data"
+#define HIGH_SCORE_DOMAIN    @"Datas"
+
 @interface Const:NSObject {
 }
 
