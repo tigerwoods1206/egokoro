@@ -27,6 +27,8 @@
 
 @property  (nonatomic,strong) News_Paper_View *news_view;
 
+@property (nonatomic, assign) BOOL end_drawed;
+
 // actions
 - (IBAction)undo:(id)sender;
 - (IBAction)redo:(id)sender;

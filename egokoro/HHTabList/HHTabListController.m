@@ -166,6 +166,7 @@ static BOOL OSVersion6OrAbove = NO;
 		applicationFrame.origin.y += statusBarHeight;
 	}
 
+    
 	frame = applicationFrame;
 
     HHTabListView *layoutContainerView = [[HHTabListView alloc] initWithFrame:frame];
@@ -208,11 +209,11 @@ static BOOL OSVersion6OrAbove = NO;
 	HHTabListTabsView *tabListTabsView = self.tabListTabsView;
 	CGRect bounds = [view bounds];
 
-	if (self.wantsFullScreenLayout) {
+	//if (self.wantsFullScreenLayout) {
 		CGFloat statusBarHeight = HHStatusBarHeight();
 
 		bounds.origin.y += statusBarHeight;
-	}
+	//}
 
 	[tabListTabsView setFrame:bounds];
 }
@@ -977,8 +978,8 @@ static BOOL OSVersion6OrAbove = NO;
 
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    cell.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
-    cell.textLabel.textColor = [UIColor darkTextColor];
+    cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0.40 alpha:1.0];
+    cell.textLabel.textColor = [UIColor whiteColor];
 }
 
 
@@ -1006,6 +1007,23 @@ static BOOL OSVersion6OrAbove = NO;
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 40)] ;
+    tableView.sectionHeaderHeight = headerView.frame.size.height;
+    tableView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.50 alpha:1.0];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, headerView.frame.size.width - 20, 22)];
+    label.text = [self tableView:tableView titleForHeaderInSection:section];
+    label.font = [UIFont boldSystemFontOfSize:16.0];
+    label.shadowOffset = CGSizeMake(0, 1);
+    label.shadowColor = [UIColor grayColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    
+    [headerView addSubview:label];
+    return headerView;
+    
+}
 
 #pragma mark -
 #pragma mark API

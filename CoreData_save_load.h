@@ -21,6 +21,7 @@
 -(void)store_NSData:(NSData *)data andkey:(NSString *)key;
 -(NSData *)get_Data:(NSDate *)date;
 -(NSData *)get_Data_from_key:(NSString *)key;
+-(NSArray *)get_Data_Array_from_key:(NSString *)key;
 
 -(NSArray *)get_dataarray:(int)before_day;
 -(void)del_allData;

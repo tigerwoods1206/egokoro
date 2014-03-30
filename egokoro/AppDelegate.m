@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "HHTabListController.h"
+#import "Appirater.h"
 
 @implementation AppDelegate
 
@@ -16,9 +17,12 @@
 {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.NEWS_FLAG = USER_NEWS;
     // 次の2行を追加
 //    ViewController* topMenu = [[ViewController alloc] init];
 //    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:topMenu];
+    
+    
     
     NSString *path;
     NSBundle *bundle = [NSBundle mainBundle];
@@ -59,13 +63,18 @@
         [ep_titles addObject:ep_list];
 
         for (NSString *ep_name in ep_list) {
-            ViewController* topMenu = [[ViewController alloc] init];
-            [topMenu setTitle:ep_name];
-            NSString *add = [one_news objectForKey:ep_name];
-            topMenu.news_address = add;
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:topMenu];
-            
-            [ep_viewControllers setObject:navigationController forKey:ep_name];
+            if ([key_news_name compare:@"モード"]==NSOrderedSame) {
+               
+            }
+            else {
+                ViewController* topMenu = [[ViewController alloc] init];
+                [topMenu setTitle:ep_name];
+                NSString *add = [one_news objectForKey:ep_name];
+                topMenu.news_address = add;
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:topMenu];
+                
+                [ep_viewControllers setObject:navigationController forKey:ep_name];
+            }
         }
         tmp_epviewcont = [ep_viewControllers copy];
         [viewControllers setObject:tmp_epviewcont forKey:key_news_name];
@@ -79,7 +88,7 @@
     hhcont.sectionList = news_name_list;
     hhcont.dataSource = data_source;
     //[hhcont setDelegate:hhcont.delegate];
-    hhcont = [hhcont initWithViewControllers:viewControllers];
+    hhcont = [hhcont initWithViewControllers:viewControllers backgroundImage:[UIImage imageNamed:@"blue.jpg"]];
     
   	self.viewController = hhcont;
     self.window.rootViewController =  self.viewController;
@@ -114,6 +123,17 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)appstore_review_init_in_didFinishLaunchingWithOptions
+{
+    [Appirater setAppId:@""];
+    [Appirater appLaunched:YES];
+}
+
+- (void)appstore_review_init_in_applicationWillEnterForeground
+{
+    [Appirater appEnteredForeground:YES];
 }
 
 @end

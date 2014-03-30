@@ -16,7 +16,9 @@
 }
 
 -(UIImage_Text *)getImageText:(NSString *)title;
+-(NSArray *)getImage_OneTitle_Array:(NSString *)title;
 -(void)setImageText:(UIImage_Text *)imagetext and_key:(NSString *)title;
 -(NSArray *)getImageArray;
+-(void)delAllImage;
 
 @end

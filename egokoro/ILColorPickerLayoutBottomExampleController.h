@@ -22,6 +22,7 @@
 
 @property (nonatomic, assign) id<ILColorPickerLayoutBottomExampleControllerDelegate> delegate;
 @property (nonatomic, assign) IBOutlet ILColorPickerView *colorPicker;
+@property (nonatomic, retain) UIColor *cur_Color;
 
 - (IBAction)pushOK:(id)sender;
 

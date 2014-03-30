@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Codable.h"
+#import "UIImage+Text.h"
 
 @interface Save_Props : Codable
 
@@ -15,5 +16,9 @@
 @property NSString *news_title;
 @property NSString *Pubday;
 @property NSString *s3Data;
+@property NSString *category;
+@property NSString *hpadress;
+
+-(void)set_ImageText:(UIImage_Text *)imgtxt;
 
 @end

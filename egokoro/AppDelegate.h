@@ -12,5 +12,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
+@property (strong, nonatomic) NSString *hpaddress;
+@property (strong, nonatomic) NSString *title;
+@property (assign, nonatomic) int NEWS_FLAG;
 
 @end

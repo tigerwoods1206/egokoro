@@ -79,6 +79,20 @@
     self.description = news_imagetext.text;
     self.news_image  = news_imagetext.image;
     self.date        = news_imagetext.pub_day;
+    self.user        = news_imagetext.user;
+    self.category    = news_imagetext.category;
+    self.hpaddress   = news_imagetext.hpadress;
+   // self.props       = news_imagetext.props;
+}
+
+-(void)set_OtherNewsItem:(Item *)item
+{
+    self.title       = item.title;
+    self.description = item.description;
+    self.news_image  = item.news_image;
+    self.date        = item.date;
+    self.user        = item.user;
+    self.category    = item.category;
 }
 
 -(void)dealloc

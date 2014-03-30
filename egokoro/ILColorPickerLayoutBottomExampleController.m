@@ -19,13 +19,15 @@
     
     // Build a random color to show off setting the color on the pickers
     
-    UIColor *c=[UIColor colorWithRed:(arc4random()%100)/100.0f 
-                               green:(arc4random()%100)/100.0f
-                                blue:(arc4random()%100)/100.0f
-                               alpha:1.0];
+//    UIColor *c=[UIColor colorWithRed:(arc4random()%100)/100.0f 
+//                               green:(arc4random()%100)/100.0f
+//                                blue:(arc4random()%100)/100.0f
+//                               alpha:1.0];
     
-    colorChip.backgroundColor=c;
-    colorPicker.color=c;
+//    colorChip.backgroundColor=c;
+//    colorPicker.color=c;
+    colorChip.backgroundColor = self.cur_Color;
+    colorPicker.color         = self.cur_Color;
 }
 
 #pragma mark - ILColorPickerDelegate

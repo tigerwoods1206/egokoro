@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "Codable.h"
+//#import "Save_Props.h"
 
 @interface UIImage_Text : Codable
 
@@ -16,5 +17,10 @@
 @property NSString *pub_day;
 @property NSString *text;
 @property NSString *news_title;
+@property NSString *user;
+@property NSString *category;
+@property NSString *hpadress;
+
+//@property Save_Props *props;
 
 @end

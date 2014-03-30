@@ -94,7 +94,7 @@
             }
             else
             {
-                [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
+                [self showAlertMessage:@"記事が投稿されました。" withTitle:@"投稿完了"];
             }
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

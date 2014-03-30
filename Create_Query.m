@@ -59,6 +59,13 @@
     return query;
 }
 
++(NSString *)create_category_query:(NSString *)category
+{
+    NSString *query;
+    query = [NSString stringWithFormat:@"select %@, category from %@ where category = '%@'",S3DATA_ATTRIBUTE,HIGH_SCORE_DOMAIN,category];
+    return query;
+}
+
 +(NSString *)create_title_query:(NSString *)title
 {
     NSString *query;

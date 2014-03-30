@@ -232,6 +232,68 @@
 
 }
 
+-(NSArray *)get_Data_Array_from_key:(NSString *)key
+{
+    // DBから読み取るためのリクエストを作成
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // 取得するエンティティを設定
+    NSEntityDescription *entityDescription;
+    entityDescription = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];
+    [fetchRequest setEntity:entityDescription];
+    
+    // ソート条件配列を作成
+    NSSortDescriptor *desc;
+    desc = [[NSSortDescriptor alloc] initWithKey:@"key" ascending:YES];
+   // desc = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    
+    NSArray *sortDescriptors;
+    sortDescriptors = [[NSArray alloc] initWithObjects:desc, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // 取得条件の設定
+    
+    NSPredicate *pred;
+    pred = [NSPredicate predicateWithFormat:@"title = %@", key];
+    [fetchRequest setPredicate:pred];
+    
+    // 取得最大数の設定
+    [fetchRequest setFetchBatchSize:10];
+    
+    // データ取得用コントローラを作成
+    NSFetchedResultsController *resultsController;
+    resultsController = [[NSFetchedResultsController alloc]
+                         initWithFetchRequest:fetchRequest
+                         managedObjectContext:context
+                         sectionNameKeyPath:nil
+                         cacheName:nil];
+    
+    // DBから値を取得する
+    NSError *error;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    // 取得結果は[fetchedObjects]プロパティに入っている
+    NSArray *result = resultsController.fetchedObjects;
+    
+    int count = [result count];
+    if (count==0) {
+        return nil;
+    }
+    
+    
+    NSMutableArray *data_arr = [[NSMutableArray alloc] init];
+    for (int idx = 0; idx < [result count]; idx++) {
+        [data_arr addObject:[[result objectAtIndex:idx] valueForKey:@"data"]];
+    }
+    
+   // NSData *data = [[result objectAtIndex:0] valueForKey:@"data"];
+    return data_arr;
+}
+
+
 -(NSArray *)get_dataarray:(int)before_day
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

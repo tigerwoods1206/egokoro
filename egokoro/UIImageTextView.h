@@ -16,7 +16,7 @@
 
 @end
 
-@interface UIImageTextView : UITextView
+@interface UIImageTextView : UITextView <UIScrollViewAccessibilityDelegate,UIScrollViewDelegate>
 
 @property(nonatomic,assign) id<UICustumImageTextView_Tap_Delegate> delegate;
 @property(nonatomic,retain) UIImageView *imgview;
@@ -24,5 +24,6 @@
 -(void)setDrawImage:(UIImage *)image;
 -(void)delDrawImage;
 -(void)cutOutframeText;
+-(void)setImage_User:(UIImage *)image;
 
 @end

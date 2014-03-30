@@ -24,6 +24,7 @@ ILColorPickerLayoutBottomExampleControllerDelegate
 >
 {
     BOOL opend;
+    UIColor *curColor;
     ILColorPickerLayoutBottomExampleController *colorpick_view;
 }
 
@@ -48,6 +49,9 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     opend = FALSE;
+    self.end_drawed = FALSE;
+    
+    curColor = [UIColor redColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,10 +77,13 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     
     // close it after 3 seconds
     self.previewImageView.hidden = YES;
+    self.end_drawed = TRUE;
    // [self.navigationController popViewControllerAnimated:YES];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         [_news_view set_newsimage:self.drawingView.image];
     }];
+    
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
 //        self.previewImageView.hidden = YES;
 //        [self.navigationController popViewControllerAnimated:YES];
@@ -184,40 +191,18 @@ ILColorPickerLayoutBottomExampleControllerDelegate
 
 - (IBAction)colorChange:(id)sender
 {
-    /* //original
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Selet a color"
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Black", @"Red", @"Green", @"Blue", nil];
-    
-    [actionSheet setTag:kActionSheetColor];
-    [actionSheet showInView:self.view];
-     */
-   // ILColorPickerView *colorpick_view = [[ILColorPickerView alloc] init];
-    
-    
     colorpick_view = [[ILColorPickerLayoutBottomExampleController alloc] init];
     colorpick_view.delegate = self;
-//    UIColor *c=[UIColor colorWithRed:(arc4random()%100)/100.0f
-//                               green:(arc4random()%100)/100.0f
-//                                blue:(arc4random()%100)/100.0f
-//                               alpha:1.0];
-//    
-//    colorpick_view.Color_Picker.color=c;
-//
-   // [self.navigationController pushViewController:colorpick_view animated:YES];
-     
-    
+    colorpick_view.cur_Color = curColor;
     
     [self presentViewController:colorpick_view animated:YES completion:nil];
-  
 }
 
 -(void)pushOK:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil ];
     self.drawingView.lineColor =  colorpick_view.colorPicker.color;
+    curColor = colorpick_view.colorPicker.color;
     
 }
 
@@ -227,10 +212,10 @@ ILColorPickerLayoutBottomExampleControllerDelegate
                                                              delegate:self
                                                     cancelButtonTitle:@"Cancel"
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Pen", @"Line",
-                                  @"Rect (Stroke)", @"Rect (Fill)",
-                                  @"Ellipse (Stroke)", @"Ellipse (Fill)",
-                                  @"Eraser",
+                                                    otherButtonTitles:@"ペン", @"直線",
+                                  @"四角 (Stroke)", @"四角 (Fill)",
+                                  @"楕円 (Stroke)", @"楕円 (Fill)",
+                                  @"消しゴム",
                                   nil];
     
     [actionSheet setTag:kActionSheetTool];

@@ -47,8 +47,10 @@
         
         // darkPattern.png obtained from http://subtlepatterns.com/classy-fabric/
         // Made by Richard Tabor http://www.purtypixels.com/
-		self.separatorColor = [UIColor clearColor];
+		self.separatorColor = [UIColor clearColor];//0,0,0.804
+        //self.separatorColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.804 alpha:1.0];
         self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+        
     }
     
 	return self;

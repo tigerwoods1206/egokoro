@@ -4,14 +4,31 @@
 <dict>
 	<key>news</key>
 	<dict>
-		<key>カテゴリ</key>
+		<key>Newsカテゴリ</key>
 		<dict>
+			<key>地域</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/local/rss.xml</string>
 			<key>海外</key>
 			<string>http://rss.dailynews.yahoo.co.jp/fc/world/rss.xml</string>
 			<key>国内</key>
 			<string>http://rss.dailynews.yahoo.co.jp/fc/domestic/rss.xml</string>
+			<key>経済</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/economy/rss.xml</string>
+			<key>スポーツ</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/sports/rss.xml</string>
+			<key>エンターテイメント</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/entertainment/rss.xml</string>
+			<key>サイエンス</key>
+			<string>http://rss.dailynews.yahoo.co.jp/fc/science/rss.xml</string>
 			<key>コンピュータ</key>
 			<string>http://rss.dailynews.yahoo.co.jp/fc/computer/rss.xml</string>
+		</dict>
+		<key>オプション</key>
+		<dict>
+			<key>みんなのニュース</key>
+			<string>USER_NEWS</string>
+			<key>記事投稿</key>
+			<string>NEW_NEWS</string>
 		</dict>
 	</dict>
 </dict>

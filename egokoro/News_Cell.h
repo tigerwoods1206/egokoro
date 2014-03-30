@@ -15,9 +15,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *NewsTitle;
 @property (weak, nonatomic) IBOutlet UILabel *NewsDay;
 @property (weak, nonatomic) IBOutlet UIImageTextView *NewsDetail;
+@property (weak, nonatomic) IBOutlet UILabel *NewsUser;
+@property (weak, nonatomic) IBOutlet UILabel *NewsUserTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *NewsImage;
 
-@property (nonatomic, strong) NSString *NewsTitleText;
 @property (nonatomic, strong) Item *NewsItem;
 
 @end

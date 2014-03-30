@@ -11,6 +11,7 @@
 #import "Create_Query.h"
 #import <AWSS3/AWSS3.h>
 
+
 @implementation S3_SimpleDB_save_load
 
 -(id)init
@@ -31,23 +32,11 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        /*
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"]]; // Localeの指定
-        [df setDateFormat:@"yyMMddHHmm"];
-        NSString *strNow = [df stringFromDate:[NSDate date]];
-        int intDay = [strNow intValue];
-         */
         
         NSString *key = [Const makeUniqueString];
         [self uploadData:data and_key:key];
         prop.s3Data = key;
         AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andProps:prop];
-        //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithKeys:key andUser:prop.user andPubday:[Const nowKeystring] and_title:prop.news_title];
-        //AnyData_forSimpleDB *any_data = [[AnyData_forSimpleDB alloc] initWithData:data andMainKey:key];
-       // SimpleDB_DataList  *sDB_DataList  = [[SimpleDB_DataList alloc] initWithProperties:data andMainkey:key];
-        //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-        //[self.sdb createDataDomain];
         [self.sdb addData:any_data];
     });
 
@@ -85,7 +74,7 @@
             }
             else
             {
-                [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
+                [self showAlertMessage:@"記事が投稿されました。" withTitle:@"投稿完了"];
             }
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -121,11 +110,14 @@
    // NSArray *arr = [self.sdb getNextPageOfData];
   //  int count = [self.sdb DataCount];
     NSArray *arr = [self.sdb getDatas];
+    [self Download_S3Array:arr block:block];
     
+    /*
     for (AnyData_forSimpleDB *adb in arr) {
         NSString *s3key = adb.s3Data;
         [self Download_S3:s3key block:block];
     }
+     */
    //  dispatch_sync(dispatch_get_main_queue(), block);
 }
 
@@ -136,12 +128,55 @@
     // NSArray *arr = [self.sdb getNextPageOfData];
     //  int count = [self.sdb DataCount];
     NSArray *arr = [self.sdb getDatas:query];
-    
+    [self Download_S3Array:arr block:block];
+    /*
     for (AnyData_forSimpleDB *adb in arr) {
         NSString *s3key = adb.s3Data;
         [self Download_S3:s3key block:block];
     }
+     */
     //  dispatch_sync(dispatch_get_main_queue(), block);
+}
+
+-(void)Download_S3Array:(NSArray *)adb_arr block:(dispatch_block_t)block
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        
+        NSMutableArray *arr = [[NSMutableArray alloc] init];
+        for (AnyData_forSimpleDB *adb in adb_arr) {
+            NSString *s3key = adb.s3Data;
+            S3GetObjectRequest* getRequest = [[S3GetObjectRequest alloc] initWithKey:s3key withBucket:[Const pictureBucket]];
+            getRequest.contentType = @"image/jpeg";
+            //  getRequest.delegate = self;
+            
+            S3GetObjectResponse* getResponse = [self.s3 getObject:getRequest];
+            // return;
+            if(getResponse == nil)
+            {
+                if(getResponse.error != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        NSLog(@"Error: %@", getResponse.error);
+                        [self showAlertMessage:[getResponse.error.userInfo objectForKey:@"message"] withTitle:@"Browser Error"];
+                    });
+                    
+                }
+                
+            }
+            else
+            {
+                NSData *down = getResponse.body;
+                [arr addObject:down];
+            }
+            
+        }
+        int count = [arr count];
+        self.Data_Arr = arr;
+        dispatch_sync(dispatch_get_main_queue(), block);
+
+    });
 }
      
 -(void)Download_S3:(NSString *)s3_key block:(dispatch_block_t)block

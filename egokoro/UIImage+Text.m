@@ -10,6 +10,4 @@
 
 @implementation UIImage_Text
 
-
-
 @end

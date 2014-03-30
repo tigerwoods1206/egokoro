@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.editable = NO;
     }
     return self;
 }
@@ -38,9 +39,32 @@
     
 }
 
--(void)setDrawImage:(UIImage *)image
+-(void)setImage_User:(UIImage *)image
 {
     
+    
+    // 非表示領域を設定（四角形）
+    CGRect exclusionRect =
+    CGRectMake(0, 0,
+               image.size.width, image.size.height*0.8);
+    [self setFont:[UIFont systemFontOfSize:image.size.height * 0.2]];
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRect:exclusionRect];
+    
+    // テキストビューに設定
+    self.textContainer.exclusionPaths = @[path];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = exclusionRect;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    self.imgview = imageView;
+    [self addSubview:imageView];
+}
+
+
+-(void)setDrawImage:(UIImage *)image
+{
+    self.dataDetectorTypes = UIDataDetectorTypeLink;
     
     // 非表示領域を設定（四角形）
     CGRect exclusionRect =
@@ -65,6 +89,7 @@
             [subview removeFromSuperview];
         }
     }
+    self.textContainer.exclusionPaths = nil;
 }
 
 -(void)cutOutframeText

@@ -17,6 +17,7 @@
 #import "News_Cell.h"
 #import "Imagetext_save_load.h"
 #import "AWS_Image_save_load.h"
+#import "SVProgressHUD.h"
 
 @interface ViewController () <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 {
@@ -25,7 +26,9 @@
     NSDictionary *dicinfo;
     UIRefreshControl *refreshControl;
     AnimationController *_animationController;
+    News_Paper_View *News_view;
     int News_Get_Flag;
+    BOOL DrawButton_Flag;
 }
 -(void)receiveInfo;
 -(void)receiveInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock;
@@ -43,26 +46,16 @@
     m_rcMainSrcn = [[UIScreen mainScreen] applicationFrame];
     m_notframSrcn = [[UIScreen mainScreen] bounds];
     
-    [self initView:@"main" withColor:[UIColor grayColor]];
+    [self initView:@"main" withColor:[UIColor whiteColor]];
     self.navigationController.delegate = self;
     
     //news flag
-    News_Get_Flag = NEW_NEWS;
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self setNews_Get_Flag:app.NEWS_FLAG];
     
     //refresh cont
     
     _items = [[NSMutableArray alloc] init];
-    
-    [self receiveInfoWithCompletedBlock:^{
-        [m_TblView reloadData];
-    } errorBlock:nil];
-    
-    
-    refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self
-                       action:@selector(receiveInfo)
-             forControlEvents:UIControlEventValueChanged];
-    [m_TblView addSubview:refreshControl];
     
     //init Custum Cell
     UINib *nib = [UINib nibWithNibName:@"News_View" bundle:nil];
@@ -70,6 +63,17 @@
     
     // アニメーションを管理するクラス
     _animationController =[[AnimationController alloc] init];
+    
+    News_view = [[News_Paper_View alloc] init];
+    
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self
+                       action:@selector(receiveInfo)
+             forControlEvents:UIControlEventValueChanged];
+    [m_TblView addSubview:refreshControl];
+    
+    [self receiveInfo];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -99,10 +103,17 @@
     [self.view addSubview:m_View];
     
     // UITableView
+    /*
     m_TblView = [[UITableView alloc] initWithFrame:CGRectMake( 0, NAVIGATIONBAR_HEIGHT - 15 + AD_HEIGHT,
                                                               m_rcMainSrcn.size.width,
                                                               m_rcMainSrcn.size.height-NAVIGATIONBAR_HEIGHT-TABBAR_HEIGHT - AD_HEIGHT + 15)
                                              style:UITableViewStyleGrouped];
+     */
+    m_TblView = [[UITableView alloc] initWithFrame:CGRectMake( 0, m_rcMainSrcn.origin.y - 15 -NAVIGATIONBAR_HEIGHT,
+                                                              m_rcMainSrcn.size.width,
+                                                              m_rcMainSrcn.size.height + 15 -TABBAR_HEIGHT-AD_HEIGHT)
+                                             style:UITableViewStyleGrouped];
+
     [m_TblView setBackgroundColor:[UIColor clearColor]];
     [m_TblView setBackgroundView:nil];
      
@@ -118,6 +129,8 @@
     [m_View addSubview:m_TblView];
 
     [self init_UIToolBar];
+    
+    DrawButton_Flag = TRUE;
 
 }
 
@@ -127,62 +140,86 @@
                                                               m_rcMainSrcn.size.width, TABBAR_HEIGHT)];
     
     // ボタンを作成する
-    UIBarButtonItem * btn1 = [ [ UIBarButtonItem alloc ] initWithTitle:@"User_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_user_news: ) ];
+    UIBarButtonItem * btn1 = [ [ UIBarButtonItem alloc ] initWithTitle:@"ニュース見る" style:UIBarButtonItemStyleBordered target:self action:@selector( go_user_news: ) ];
     UIBarButtonItem * btn2 = [ [ UIBarButtonItem alloc ] initWithTitle:@"My_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_my_news: ) ];
-    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Get_News" style:UIBarButtonItemStyleBordered target:self action:@selector( go_new_news: ) ];
+    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithTitle:@"投稿する" style:UIBarButtonItemStyleBordered target:self action:@selector( go_new_news: ) ];
      UIBarButtonItem *btn4 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector( clear: ) ];
     //    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector( do_navigate: ) ];
     // ボタン配列をツールバーに設定する
-    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn2, btn3, btn4, nil ];
+    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn3, btn4, nil ];
     [self.view addSubview:menuToolBar];
 }
 
+#pragma mark UITOOLBAR button method
 -(void)go_user_news:(id)sender
 {
-     News_Get_Flag = USER_NEWS;
+    [self setNews_Get_Flag:USER_NEWS];
+    News_Get_Flag = USER_NEWS;
     [self receiveInfo];
 }
 -(void)go_my_news:(id)sender
 {
-    News_Get_Flag = MY_NEWS;
+    [self setNews_Get_Flag:MY_NEWS];
+    //_News_Get_Flag = MY_NEWS;
     [self receiveInfo];
 }
 
 -(void)go_new_news:(id)sender
 {
-     News_Get_Flag = NEW_NEWS;
+    [self setNews_Get_Flag:NEW_NEWS];
+    //_News_Get_Flag = NEW_NEWS;
     [self receiveInfo];
+    
 }
 
 -(void)clear:(id)sender
 {
     AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];
     [awssl.S3sdb Clear_All_Data];
-    News_Get_Flag = NEW_NEWS;
+    Imagetext_save_load *imgsl = [[Imagetext_save_load alloc] init];
+    [imgsl delAllImage];
+    News_Get_Flag = USER_NEWS;
     [self receiveInfo];
 }
 
+#pragma mark setter News_Get_Flag
+-(void)setNews_Get_Flag:(int)flag
+{
+    News_Get_Flag= flag;
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app.NEWS_FLAG = flag;
+    
+    DrawButton_Flag = YES;
+    if(News_Get_Flag != NEW_NEWS){
+        DrawButton_Flag = NO;
+    }
+    [News_view set_DrawButton_enabled:DrawButton_Flag];
+}
 
 #pragma mark private method
 #pragma mark --get cell data
 -(void)receiveInfo
 {
+    [SVProgressHUD showWithStatus:@"Waiting..."
+                         maskType:SVProgressHUDMaskTypeGradient];
+
     if ( News_Get_Flag == NEW_NEWS) {
         [self receiveInfoWithCompletedBlock:^{
             [m_TblView reloadData];
             [refreshControl endRefreshing];
+            [SVProgressHUD dismiss];
         } errorBlock:nil];
     }
     else if (News_Get_Flag == MY_NEWS) {
         [self loadInfoWithCompletedBlock:^{
             [m_TblView reloadData];
             [refreshControl endRefreshing];
+            [SVProgressHUD dismiss];
         } errorBlock:nil];
     }
     else { // USER_NEWS
         [self loadInfo_AWS_WithCompletedBlock:^{
- //           [m_TblView reloadData];
-//            [refreshControl endRefreshing];
+
         } errorBlock:nil];
     }
 }
@@ -193,24 +230,45 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         //_items = [[NSMutableArray alloc] initWithArray:tmp_items];
         [_items removeAllObjects];
-        AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];
-        [awssl getImageArray:
+        AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];//getImageArray_with_category
+        [awssl getImageArray_with_category:self.title add_block:
          ^{
              NSArray *imgarr = awssl.S3sdb.Data_Arr;
-             for (NSData *cur_imgtxt_data in imgarr) {
+             NSArray *sort_imgarr = [awssl rand_sort:imgarr];
+             NSMutableArray *title_arr = [[NSMutableArray alloc] init];
+             for (NSData *cur_imgtxt_data in sort_imgarr) {
                  //Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
                  Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
                  UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:cur_imgtxt_data];
+                 
+                 if ([self strcmp_in_arr:imgtxt.news_title in_arr:title_arr]) {
+                     continue;
+                 }
+                 
+                 [title_arr addObject:imgtxt.news_title];
+                 
                  [tmp_item setNews_imagetext:imgtxt];
                  [_items addObject:tmp_item];
              }
              [m_TblView reloadData];
              [refreshControl endRefreshing];
+             [SVProgressHUD dismiss];
            // dispatch_sync(dispatch_get_main_queue(), block);
          }
          ];
         
     });
+}
+
+-(BOOL)strcmp_in_arr:(NSString *)str in_arr:(NSArray *)arr
+{
+    for(NSString *str_in_arr in arr)
+    {
+        if ([str_in_arr compare:str]==NSOrderedSame) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark --get cell info from CoreData
@@ -235,8 +293,29 @@
 -(void) receiveInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        
+        if([self.news_address compare:@"USER_NEWS"]==NSOrderedSame){
+            News_Get_Flag = USER_NEWS;
+            [self setNews_Get_Flag:USER_NEWS];
+            [self receiveInfo];
+            return;
+        }
+        else if([self.news_address compare:@"NEW_NEWS"]==NSOrderedSame){
+            News_Get_Flag = NEW_NEWS;
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            self.news_address = app.hpaddress;
+            //self.title        = app.title;
+        }
+        else {
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            app.hpaddress = self.news_address;
+            app.title     = self.title;
+        }
+        
         //NSURL *url = [NSURL URLWithString:@"http://headlines.yahoo.co.jp/rss/all-c_int.xml"];
         NSURL *url = [NSURL URLWithString:self.news_address];
+        
         ASIHTTPRequest *request;
         NSError *err;
         
@@ -252,6 +331,9 @@
         NSArray *channel_array = [rss_array valueForKey:@"channel"];
         NSArray *channel_items = [channel_array valueForKey:@"item"];
         
+        [_items removeAllObjects];
+       // Imagetext_save_load *isl = [[Imagetext_save_load alloc] init];
+
         NSMutableArray *tmp_items = [[NSMutableArray alloc] init];
         int set_description_flg;
         for (NSArray *one_chan in channel_items) {
@@ -276,18 +358,14 @@
             NSString *str_date_jpn = [formatter stringFromDate:date];
             NSLog(@"%@",str_date_jpn);
             
-            for (Item *one_item in _items) {
-                if (([title compare:one_item.title] == NSOrderedSame) &&
-                    (one_item.description != nil)){
-                    tmp_item.description = one_item.description;
-                    tmp_item.date = one_item.date;
-                    set_description_flg = FALSE;
-                    break;
-                }
-            }
+            NSDictionary *linkHtmlD = [one_chan valueForKey:@"link"];
+            NSString *linkHtml = [linkHtmlD valueForKey:@"text"];
             
-            tmp_item.title = title;
-            tmp_item.date  = str_date_jpn;
+            tmp_item.title    = title;
+            tmp_item.date     = str_date_jpn;
+            tmp_item.category = self.title;
+            tmp_item.hpaddress = linkHtml;
+            
             
             if (set_description_flg) {
                 //_item.description = @"";
@@ -319,13 +397,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     NSString *cellIdentifier = @"Cell";
     News_Cell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     //CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Item *item = _items[indexPath.row];
-
-    [cell setNewsItem:item];
+    if (_items.count!=0) {
+        Item *item = _items[indexPath.row];
+        [cell setNewsItem:item];
+    }
+    
+    if ((indexPath.row)%2 == 0) {
+        cell.backgroundColor = [UIColor colorWithRed:0.961 green:0.961 blue:0.961 alpha:1.0];
+        cell.NewsDetail.backgroundColor = [UIColor colorWithRed:0.961 green:0.961 blue:0.961 alpha:1.0];
+    }
+    else {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.NewsDetail.backgroundColor = [UIColor whiteColor];
+    }
+    
     return cell;
 }
 
@@ -340,14 +430,21 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    News_Paper_View *news_view = [[News_Paper_View alloc] init];
-    Item *item = _items[indexPath.row];
-   // NSLog(@"%s",item.description);
-    [news_view set_text:item.description];
-    [news_view set_newstitle:item.title];
-    [news_view setPub_day:item.date];
-
-    [self.navigationController pushViewController:news_view animated:YES];
+    [News_view set_DrawButton_enabled:DrawButton_Flag];
+    if(_items.count){
+        Item *item = _items[indexPath.row];
+        // NSLog(@"%s",item.description);
+        /*
+        [News_view set_text:item.description];
+        [News_view set_newstitle:item.title];
+        [News_view setPub_day:item.date];
+        [News_view setUser:item.user];
+        [News_view setCategory:item.category];
+         */
+        [News_view setCellItem:item];
+    }
+    
+    [self.navigationController pushViewController:News_view animated:YES];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

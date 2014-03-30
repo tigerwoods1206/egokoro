@@ -29,6 +29,21 @@
     return nil;
 }
 
+-(NSArray *)getImage_OneTitle_Array:(NSString *)title
+{
+    NSArray *dataarr = [inst get_Data_Array_from_key:title];
+    NSMutableArray *imgarr = [[NSMutableArray alloc] init];
+    for(NSData *data in dataarr)
+    {
+        if(data!=nil){
+            UIImage_Text *load_image = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            [imgarr addObject:load_image];
+        }
+        
+    }
+    return imgarr;
+}
+
 -(void)setImageText:(UIImage_Text *)imagetext and_key:(NSString *)title;
 {
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
@@ -48,6 +63,11 @@
 
     }
     return imgarr;
+}
+
+-(void)delAllImage
+{
+    [inst del_allData];
 }
 
 @end

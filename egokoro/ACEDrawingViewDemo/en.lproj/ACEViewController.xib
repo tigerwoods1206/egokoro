@@ -37,17 +37,18 @@
                                 <action selector="redo:" destination="-1" id="53"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Clear" id="46">
+                        <barButtonItem title="クリア" id="46">
                             <connections>
                                 <action selector="clear:" destination="-1" id="54"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="47"/>
-                        <barButtonItem title="Back" id="rde-xn-nzF">
+                        <barButtonItem title="戻る" id="rde-xn-nzF">
                             <connections>
                                 <action selector="back:" destination="-1" id="ySL-ih-RmX"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="AlJ-pe-b4q"/>
                         <barButtonItem systemItem="camera" id="48">
                             <connections>
                                 <action selector="takeScreenshot:" destination="-1" id="55"/>
@@ -84,23 +85,23 @@
                     <rect key="frame" x="0.0" y="479" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Color" id="72">
+                        <barButtonItem title="色" id="72">
                             <connections>
                                 <action selector="colorChange:" destination="-1" id="74"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Pen" id="73">
+                        <barButtonItem title="ペン" id="73">
                             <connections>
                                 <action selector="toolChange:" destination="-1" id="75"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="43"/>
-                        <barButtonItem title="Width" id="42">
+                        <barButtonItem title="太さ" id="42">
                             <connections>
                                 <action selector="toggleWidthSlider:" destination="-1" id="57"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Alpha" id="64">
+                        <barButtonItem title="透明度" id="64">
                             <connections>
                                 <action selector="toggleAlphaSlider:" destination="-1" id="69"/>
                             </connections>
