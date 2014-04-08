@@ -42,6 +42,15 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     
     // start with a black pen
     self.lineWidthSlider.value = self.drawingView.lineWidth;
+    self.lineWidthView.hidden = YES;
+    //CGFloat ratio = sender.value/sender.maximumValue;
+    CGFloat width = self.lineWidthView.frame.size.width/2;
+    self.lineWidthView.layer.cornerRadius = width;
+    [self.lineWidthView setFrame:CGRectMake(self.lineWidthView.frame.origin.x,
+                                            self.lineWidthView.frame.origin.y,
+                                            self.drawingView.lineWidth,
+                                            self.drawingView.lineWidth)];
+
     
     // init the preview image
     self.previewImageView.layer.borderColor = [[UIColor blackColor] CGColor];
@@ -226,6 +235,7 @@ ILColorPickerLayoutBottomExampleControllerDelegate
 {
     // toggle the slider
     self.lineWidthSlider.hidden = !self.lineWidthSlider.hidden;
+    self.lineWidthView.hidden = self.lineWidthSlider.hidden;
     self.lineAlphaSlider.hidden = YES;
 }
 
@@ -233,6 +243,16 @@ ILColorPickerLayoutBottomExampleControllerDelegate
 - (IBAction)widthChange:(UISlider *)sender
 {
     self.drawingView.lineWidth = sender.value;
+    CGFloat width = self.lineWidthView.frame.size.width/2;
+    self.lineWidthView.layer.cornerRadius = width;
+   // CGFloat ratio = sender.value/sender.maximumValue;
+    [self.lineWidthView setFrame:CGRectMake(self.lineWidthView.frame.origin.x,
+                                            self.lineWidthView.frame.origin.y,
+                                            self.drawingView.lineWidth,
+                                            self.drawingView.lineWidth)];
+    //self.lineWidthView.layer.cornerRadius = width * sender.value/sender.maximumValue;
+    self.lineWidthView.clipsToBounds=YES;
+    self.lineWidthView.backgroundColor = curColor;
 }
 
 - (IBAction)toggleAlphaSlider:(id)sender
@@ -240,11 +260,14 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     // toggle the slider
     self.lineAlphaSlider.hidden = !self.lineAlphaSlider.hidden;
     self.lineWidthSlider.hidden = YES;
+    self.lineWidthView.hidden = self.lineAlphaSlider.hidden;
 }
 
 - (IBAction)alphaChange:(UISlider *)sender
 {
     self.drawingView.lineAlpha = sender.value;
+    self.lineWidthView.alpha = sender.value;
+    self.lineWidthView.backgroundColor = curColor;
 }
 
 @end

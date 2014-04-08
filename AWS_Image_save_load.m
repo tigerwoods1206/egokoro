@@ -7,6 +7,7 @@
 //
 
 #import "AWS_Image_save_load.h"
+#import "Custum_SimpleDB.h"
 
 @implementation AWS_Image_save_load
 
@@ -43,6 +44,21 @@
     [self.S3sdb Load_Data_Arr:block add_query:[Create_Query create_title_query:title]];
 }
 
+-(void)getImageArray_with_title:(NSString *)title and_user:(NSString *)user  add_block:(dispatch_block_t)block
+{
+    [self init_s3sdb];
+    [self.S3sdb Load_Data_Arr:block add_query:[Create_Query create_title_query:title andUser:user]];
+}
+
+-(void)getImageArray_ranking:(dispatch_block_t)block
+{
+    Custum_SimpleDB *csdb = [[Custum_SimpleDB alloc] init];
+    NSArray *adbarr = [csdb Load_Data_Arr_add_query:@"select * from `IINes`  where hpadress > '0' order by hpadress desc"];
+    
+    [self init_s3sdb];
+    [self.S3sdb Load_Data_Arr:adbarr and_block:block];
+}
+
 -(void)setImageText:(UIImage_Text *)imagetext
 {
     [self init_s3sdb];
@@ -56,6 +72,13 @@
     props.pubday = imagetext.pub_day;
      */
     [self.S3sdb Save_Data:data and_props:props];
+}
+
+-(void)delImageText:(UIImage_Text *)imgtext
+{
+    [self init_s3sdb];
+    NSString *query = [Create_Query create_title_query:imgtext.news_title andUser:imgtext.user];
+    [self.S3sdb Delete_Data_for_query:query];
 }
 
 -(NSArray *)rand_sort:(NSArray *)array

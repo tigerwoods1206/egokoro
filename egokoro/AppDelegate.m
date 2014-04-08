@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "HHTabListController.h"
 #import "Appirater.h"
+#import "CreateUserID.h"
 
 @implementation AppDelegate
 
@@ -18,6 +19,20 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.NEWS_FLAG = USER_NEWS;
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];  // 取得
+    NSDate *dataDay = [NSDate date];
+    [ud setObject:dataDay forKey:@"VOTE_DAY"];
+    
+    NSDate *postdataDay  = [NSDate date];
+    [ud setObject:postdataDay forKey:@"POST_DAY"];
+    
+    [ud setInteger:0 forKey:@"VOTE_NUM"];
+    [ud setInteger:0 forKey:@"POST_NUM"];
+    
+    self.USERID = [CreateUserID CreateUserID];
+    
+    
     // 次の2行を追加
 //    ViewController* topMenu = [[ViewController alloc] init];
 //    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:topMenu];
@@ -123,6 +138,10 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];  // 取得
+    [ud setInteger:0 forKey:@"VOTE_NUM"];
+    [ud setInteger:0 forKey:@"POST_NUM"];
+
 }
 
 - (void)appstore_review_init_in_didFinishLaunchingWithOptions

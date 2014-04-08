@@ -25,6 +25,8 @@
 @property (nonatomic, unsafe_unretained) IBOutlet UIBarButtonItem *toolButton;
 @property (nonatomic, unsafe_unretained) IBOutlet UIBarButtonItem *alphaButton;
 
+@property (nonatomic, unsafe_unretained) IBOutlet UIView *lineWidthView;
+
 @property  (nonatomic,strong) News_Paper_View *news_view;
 
 @property (nonatomic, assign) BOOL end_drawed;

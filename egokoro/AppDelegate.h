@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSString *hpaddress;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) int NEWS_FLAG;
+@property (assign, nonatomic) NSInteger USERID;
 
 @end

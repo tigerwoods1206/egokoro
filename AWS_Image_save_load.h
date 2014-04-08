@@ -17,9 +17,12 @@
 
 -(void)getImageText:(NSString *)title block:(dispatch_block_t)block;
 -(void)getImageArray_with_title:(NSString *)title add_block:(dispatch_block_t)block;
+-(void)getImageArray_with_title:(NSString *)title and_user:(NSString *)user  add_block:(dispatch_block_t)block;
 -(void)getImageArray_with_category:(NSString *)category add_block:(dispatch_block_t)block;
+-(void)getImageArray_ranking:(dispatch_block_t)block;
 -(void)setImageText:(UIImage_Text *)imagetext;
 -(void)getImageArray:(dispatch_block_t)block;
+-(void)delImageText:(UIImage_Text *)imgtext;
 -(NSArray *)rand_sort:(NSArray *)array;
 -(UIImage_Text *)unarchived_NSData:(NSData *)data;
 

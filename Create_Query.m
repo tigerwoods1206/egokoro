@@ -62,14 +62,24 @@
 +(NSString *)create_category_query:(NSString *)category
 {
     NSString *query;
-    query = [NSString stringWithFormat:@"select %@, category from %@ where category = '%@'",S3DATA_ATTRIBUTE,HIGH_SCORE_DOMAIN,category];
+    query = [NSString stringWithFormat:@"select * from %@ where category = '%@' limit %d",
+             HIGH_SCORE_DOMAIN,category,DATALIMIT];
     return query;
 }
 
 +(NSString *)create_title_query:(NSString *)title
 {
     NSString *query;
-    query = [NSString stringWithFormat:@"select %@, news_title from %@ where news_title = '%@'",S3DATA_ATTRIBUTE,HIGH_SCORE_DOMAIN,title];
+    query = [NSString stringWithFormat:@"select * from %@ where news_title = '%@' limit %d",
+             HIGH_SCORE_DOMAIN,title,DATALIMIT];
+    return query;
+}
+
++(NSString *)create_title_query:(NSString *)title andUser:(NSString *)user
+{
+    NSString *query;
+    query = [NSString stringWithFormat:@"select * from %@ where news_title = '%@' and where user = '%@' limit %d",
+             HIGH_SCORE_DOMAIN,title,user,DATALIMIT];
     return query;
 }
 

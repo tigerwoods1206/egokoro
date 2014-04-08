@@ -20,16 +20,20 @@
     NSString             *nextToken;
     NSData               *_archived_Data;
     NSArray              *Propnames;
-    NSString             *mainKey;
+    //NSString             *mainKey;
     int                  sortMethod;
+    NSString             *domainName;
 }
 
 
 @property (nonatomic, strong) NSString *nextToken;
+@property (nonatomic, strong) NSString *mainKey;
 
 -(id)initWithSortMethod:(int)theSortMethod;
 -(id)initWithProperties:(NSArray *)propnames andMainkey:(NSString *)key;
+-(id)initWithProperties:(NSArray *)propnames andDomainName:(NSString *)domain andMainkey:(NSString *)key;
 -(int)DataCount;
+-(int)DataCount:(NSString *)query;
 -(NSArray *)getDatas;
 -(NSArray *)getDatas:(NSString *)query;
 -(NSArray *)getNextPageOfData;

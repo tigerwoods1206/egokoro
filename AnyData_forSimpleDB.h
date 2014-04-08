@@ -25,7 +25,6 @@
 //@property NSDate *nowday;
 
 //-(id)initWithData:(NSData *)archived_Data andMainKey:(NSString *)key;
--(id)initWithKeys:(NSString *)key andUser:(NSString *)user andPubday:(NSString *)pubday and_title:(NSString *)title;
 -(id)initWithKeys:(NSString *)key andProps:(Save_Props *)props;
 -(id)initWithSimpleDBItem:(SimpleDBItem *)Item andPropNames:(NSArray *)props andMainKey:(NSString *)key;
 -(id)initWithAttributes:(NSArray *)Attributes andPropNames:(NSArray *)props andMainKey:(NSString *)key;

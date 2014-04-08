@@ -24,6 +24,8 @@
 -(NSArray *)get_Data_Array_from_key:(NSString *)key;
 
 -(NSArray *)get_dataarray:(int)before_day;
+
+-(void)del_Data_from_key:(NSString *)key;
 -(void)del_allData;
 -(id)init;
 @end

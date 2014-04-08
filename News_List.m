@@ -11,9 +11,9 @@
 #import "Const.h"
 #import "Create_Query.h"
 
-#define HIGH_SCORE_DOMAIN    @"News"
+//#define HIGH_SCORE_DOMAIN    @"News"
 
-#define S3DATA_ATTRIBUTE     @"s3data"
+//#define S3DATA_ATTRIBUTE     @"s3data"
 #define USER_ATTRIBUTE      @"user"
 #define PUBLISHDAY_ATTRIBUTE @"publish_day"
 

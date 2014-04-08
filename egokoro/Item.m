@@ -100,4 +100,39 @@
     [self removeObserver:self forKeyPath:@"description"];
 }
 
+#pragma -mark private
+
+-(void)reloadCell:(NSString *)desc
+{
+    NSInteger max_section = [my_tableview numberOfSections];
+    NSInteger max_row;
+    
+    for (int cur_section= 0; cur_section < max_section; cur_section++) {
+        max_row = [my_tableview numberOfRowsInSection:cur_section];
+        for (int cur_row = 0; cur_row < max_row; cur_row++) {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:cur_row inSection:cur_section];
+            
+            News_Cell *cell = [my_tableview cellForRowAtIndexPath:indexPath];
+            NSString *detailtext = cell.NewsTitle.text;
+            if ([detailtext compare:self.title]== NSOrderedSame) {
+                //NSString *news_text = cell.detailTextLabel.text;
+                cell.NewsDetail.text = desc;
+                [cell setNeedsDisplay];
+                //NSArray* indexPaths = [NSArray arrayWithObject:indexPath];
+                /*
+                 UIImage_Text *img_text = [csl_ins getImageText:self.title];
+                 cell.NewsDetail.text = desc;
+                 if (img_text!=nil) {
+                 [cell.NewsDetail setDrawImage:img_text.image];
+                 }
+                 */
+                //[my_tableview reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+    }
+
+}
+
+
 @end

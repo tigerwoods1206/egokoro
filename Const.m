@@ -39,6 +39,7 @@
         [dateFormatter setDateFormat:@"yyMMddHHmmss"];
         NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
         
+        srandom((unsigned) time(NULL));
         int randomValue = arc4random() % 1000;
         NSString *unique = [NSString stringWithFormat:@"%@.%d",dateString,randomValue];
    	    

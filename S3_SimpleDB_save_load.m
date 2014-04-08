@@ -97,45 +97,28 @@
 -(void)Load_Data:(NSString *)key block:(dispatch_block_t)block
 {
     [self s3sdb_init];
-    //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
     AnyData_forSimpleDB *any_data = [self.sdb getS3Data:key];
     NSString *s3key = [any_data get_value:any_data.s3Data];
     [self Download_S3:s3key block:block];
 }
 
+-(void)Load_Data_Arr:(NSArray *)adbarr and_block:(dispatch_block_t)block
+{
+    [self Download_S3Array:adbarr block:block];
+}
+
 -(void)Load_Data_Arr:(dispatch_block_t)block
 {
     [self s3sdb_init];
-     //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-   // NSArray *arr = [self.sdb getNextPageOfData];
-  //  int count = [self.sdb DataCount];
     NSArray *arr = [self.sdb getDatas];
     [self Download_S3Array:arr block:block];
-    
-    /*
-    for (AnyData_forSimpleDB *adb in arr) {
-        NSString *s3key = adb.s3Data;
-        [self Download_S3:s3key block:block];
-    }
-     */
-   //  dispatch_sync(dispatch_get_main_queue(), block);
 }
 
 -(void)Load_Data_Arr:(dispatch_block_t)block add_query:(NSString *)query
 {
     [self s3sdb_init];
-    //SimpleDB_DataList *sDB_DataList = [[SimpleDB_DataList alloc] init];
-    // NSArray *arr = [self.sdb getNextPageOfData];
-    //  int count = [self.sdb DataCount];
     NSArray *arr = [self.sdb getDatas:query];
     [self Download_S3Array:arr block:block];
-    /*
-    for (AnyData_forSimpleDB *adb in arr) {
-        NSString *s3key = adb.s3Data;
-        [self Download_S3:s3key block:block];
-    }
-     */
-    //  dispatch_sync(dispatch_get_main_queue(), block);
 }
 
 -(void)Download_S3Array:(NSArray *)adb_arr block:(dispatch_block_t)block
@@ -174,6 +157,7 @@
         }
         int count = [arr count];
         self.Data_Arr = arr;
+        self.Adb_Arr  = adb_arr;
         dispatch_sync(dispatch_get_main_queue(), block);
 
     });
@@ -230,6 +214,18 @@
     [self.sdb clearData];
 }
 
+-(void)Delete_Data_for_query:(NSString *)query
+{
+    [self s3sdb_init];
+     NSArray *arr = [self.sdb getDatas:query];
+    for (AnyData_forSimpleDB *adb in arr) {
+        NSString *s3key = adb.s3Data;
+        [self deleteData:s3key];
+        [self.sdb removeData:adb];
+    }
+    
+}
+
 -(void)deleteData:(NSString *)key
 {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -244,9 +240,10 @@
     if (self.s3 == nil) {
         self.s3  = [S3_init init_S3];
     }
-    AnyData_forSimpleDB *dum = [[AnyData_forSimpleDB alloc] init];
+    //AnyData_forSimpleDB *dum = [[AnyData_forSimpleDB alloc] init];
+    Save_Props *dum = [[Save_Props alloc] init];
     NSArray *props = [dum propertyNames];
-    self.sdb = [[SimpleDB_DataList alloc] initWithProperties:props andMainkey:nil];
+    self.sdb = [[SimpleDB_DataList alloc] initWithProperties:props andDomainName:@"Datas" andMainkey:nil];
 }
 
 

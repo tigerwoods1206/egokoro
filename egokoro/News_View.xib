@@ -34,20 +34,6 @@
                     <rect key="frame" x="227" y="34" width="86" height="86"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8y-WX-cc7">
-                    <rect key="frame" x="124" y="34" width="36" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDx-NE-KvX">
-                    <rect key="frame" x="159" y="34" width="71" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -57,8 +43,6 @@
                 <outlet property="NewsDetail" destination="iDX-xd-Nky" id="uwi-zw-cde"/>
                 <outlet property="NewsImage" destination="mpt-gn-pr9" id="A69-Ng-g3E"/>
                 <outlet property="NewsTitle" destination="RBj-zP-woy" id="DRf-E0-P6z"/>
-                <outlet property="NewsUser" destination="UDx-NE-KvX" id="fzn-9N-O5T"/>
-                <outlet property="NewsUserTitle" destination="F8y-WX-cc7" id="Ien-5c-8Sb"/>
             </connections>
         </view>
     </objects>

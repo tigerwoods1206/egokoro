@@ -21,6 +21,8 @@
 #define S3DATA_ATTRIBUTE     @"s3Data"
 #define HIGH_SCORE_DOMAIN    @"Datas"
 
+#define DATALIMIT 15
+
 @interface Const:NSObject {
 }
 

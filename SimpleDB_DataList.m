@@ -11,16 +11,16 @@
 #import "Const.h"
 
 //#define S3DATA_ATTRIBUTE     @"s3data"
-#define USER_ATTRIBUTE       @"user"
-#define PUBLISHDAY_ATTRIBUTE @"Pubday"
+//#define USER_ATTRIBUTE       @"user"
+//#define PUBLISHDAY_ATTRIBUTE @"Pubday"
 
-#define POSTDAY_ATTRIBUTE    @"post_day"
-#define TITLE_ATTRIBUTE      @"title"
+//#define POSTDAY_ATTRIBUTE    @"post_day"
+//#define TITLE_ATTRIBUTE      @"title"
 
 
 #define COUNT_QUERY          @"select count(*) from Datas"
 
-#define PUBDAY_SORT_QUERY    @"select s3data, user, title, publish_day, post_day from Datas where publish_day > '140130' order by publish_day asc"
+//#define PUBDAY_SORT_QUERY    @"select s3data, user, title, publish_day, post_day from Datas where publish_day > '140130' order by publish_day asc"
 #define USER_SORT_QUERY     @"select s3data, user, title, publish_day, post_day from Datas where user >= '' order by user desc"
 #define NO_SORT_QUERY        @"select s3data, user, title, publish_day, post_day from Datas"
 
@@ -66,6 +66,27 @@
     return self;
 }
 
+-(id)initWithProperties:(NSArray *)propnames andDomainName:(NSString *)domain andMainkey:(NSString *)key
+{
+    self = [super init];
+    if (self)
+    {
+        // Initial the SimpleDB Client.
+        sdbClient      = [[AmazonSimpleDBClient alloc] initWithAccessKey:ACCESS_KEY_ID withSecretKey:SECRET_KEY];
+        sdbClient.endpoint = [AmazonEndpoints sdbEndpoint:AP_NORTHEAST_1];
+        
+        self.nextToken = nil;
+        _archived_Data = nil;
+        self.mainKey = key;
+        Propnames = propnames;
+        domainName = domain;
+        sortMethod     = NO_SORT;
+    }
+    
+    return self;
+}
+
+
 -(id)initWithProperties:(NSArray *)propnames andMainkey:(NSString *)key
 {
     self = [super init];
@@ -77,7 +98,7 @@
         
         self.nextToken = nil;
         _archived_Data = nil;
-        mainKey = key;
+        self.mainKey = key;
         Propnames = propnames;
         sortMethod     = NO_SORT;
     }
@@ -105,12 +126,29 @@
     return [self getIntValueForAttribute:@"Count" fromList:countItem.attributes];
 }
 
+-(int)DataCount:(NSString *)query
+{
+    SimpleDBSelectRequest *selectRequest = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
+    selectRequest.consistentRead = YES;
+    
+    SimpleDBSelectResponse *selectResponse = [sdbClient select:selectRequest];
+    if(selectResponse.error != nil)
+    {
+        NSLog(@"Error: %@", selectResponse.error);
+        return 0;
+    }
+    
+    SimpleDBItem *countItem = [selectResponse.items objectAtIndex:0];
+    
+    return [self getIntValueForAttribute:@"Count" fromList:countItem.attributes];
+}
+
 /*
  * Gets the item from the High Scores domain with the item name equal to 'thePlayer'.
  */
 -(AnyData_forSimpleDB *)getS3Data:(NSString *)one_key
 {
-    SimpleDBGetAttributesRequest *gar = [[SimpleDBGetAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:one_key];
+    SimpleDBGetAttributesRequest *gar = [[SimpleDBGetAttributesRequest alloc] initWithDomainName:domainName andItemName:one_key];
     SimpleDBGetAttributesResponse *response = [sdbClient getAttributes:gar];
     //[gar release];
     if(response.error != nil)
@@ -119,18 +157,10 @@
         return nil;
     }
     
-    /*
-    one_key =  [self getStringValueForAttribute:S3DATA_ATTRIBUTE fromList:response.attributes];
-    NSString *title  =  [self getStringValueForAttribute:TITLE_ATTRIBUTE fromList:response.attributes];
-    NSString *user   =  [self getStringValueForAttribute:USER_ATTRIBUTE fromList:response.attributes];
-    int postday      =  [self getIntValueForAttribute:POSTDAY_ATTRIBUTE fromList:response.attributes];
-    int pubday       =  [self getIntValueForAttribute:PUBLISHDAY_ATTRIBUTE fromList:response.attributes];
-    
-     */
     
     return [[AnyData_forSimpleDB alloc] initWithAttributes:response.attributes
                                               andPropNames:Propnames
-                                                andMainKey:mainKey];
+                                                andMainKey:self.mainKey];
 }
 
 /*
@@ -155,12 +185,6 @@
         default: {
             //query = NO_SORT_QUERY;
             query = USER_QUERY;
-            /*
-            query = [Create_Query create_query:Propnames
-                                  and_main_key:S3DATA_ATTRIBUTE
-                                   and_day_key:PUBLISHDAY_ATTRIBUTE
-                                  and_last_day:[NSDate dateWithTimeIntervalSinceNow:-86400*7]];
-             */
         }
     }
     
@@ -235,8 +259,8 @@
 -(void)addData:(AnyData_forSimpleDB *)theData
 {
     NSMutableArray *attributes = [theData get_Attribute_Array];
-    mainKey = theData.s3Data;
-    SimpleDBPutAttributesRequest *putAttributesRequest = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:theData.s3Data andAttributes:attributes];
+    self.mainKey = theData.s3Data;
+    SimpleDBPutAttributesRequest *putAttributesRequest = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:domainName andItemName:theData.s3Data andAttributes:attributes];
     
     SimpleDBPutAttributesResponse *putAttributesResponse = [sdbClient putAttributes:putAttributesRequest];
     if(putAttributesResponse.error != nil)
@@ -253,7 +277,7 @@
 -(void)removeData:(AnyData_forSimpleDB *)theData
 {
     @try {
-        SimpleDBDeleteAttributesRequest *deleteItem = [[SimpleDBDeleteAttributesRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN andItemName:[theData get_value:theData.s3Data]];
+        SimpleDBDeleteAttributesRequest *deleteItem = [[SimpleDBDeleteAttributesRequest alloc] initWithDomainName:domainName andItemName:theData.s3Data];
         [sdbClient deleteAttributes:deleteItem];
     }
     @catch (NSException *exception) {
@@ -266,7 +290,7 @@
  */
 -(void)createDataDomain
 {
-    SimpleDBCreateDomainRequest *createDomain = [[SimpleDBCreateDomainRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN];
+    SimpleDBCreateDomainRequest *createDomain = [[SimpleDBCreateDomainRequest alloc] initWithDomainName:domainName];
     SimpleDBCreateDomainResponse *createDomainResponse = [sdbClient createDomain:createDomain];
     if(createDomainResponse.error != nil)
     {
@@ -279,14 +303,14 @@
  */
 -(void)clearData
 {
-    SimpleDBDeleteDomainRequest *deleteDomain = [[SimpleDBDeleteDomainRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN];
+    SimpleDBDeleteDomainRequest *deleteDomain = [[SimpleDBDeleteDomainRequest alloc] initWithDomainName:domainName];
     SimpleDBDeleteDomainResponse *deleteDomainResponse = [sdbClient deleteDomain:deleteDomain];
     if(deleteDomainResponse.error != nil)
     {
         NSLog(@"Error: %@", deleteDomainResponse.error);
     }
     
-    SimpleDBCreateDomainRequest *createDomain = [[SimpleDBCreateDomainRequest alloc] initWithDomainName:HIGH_SCORE_DOMAIN];
+    SimpleDBCreateDomainRequest *createDomain = [[SimpleDBCreateDomainRequest alloc] initWithDomainName:domainName];
     SimpleDBCreateDomainResponse *createDomainResponse = [sdbClient createDomain:createDomain];
     if(createDomainResponse.error != nil)
     {
@@ -322,7 +346,8 @@
     AnyData_forSimpleDB *adb;
     adb = [[AnyData_forSimpleDB alloc] initWithSimpleDBItem:theItem
                                                andPropNames:Propnames
-                                                 andMainKey:mainKey];
+                                                 andMainKey:self.mainKey];
+    //adb.s3Data = self.mainKey;
     
     return adb;
     

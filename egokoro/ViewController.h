@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "GADBannerView.h"
 
-@interface ViewController : UIViewController<UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface ViewController : UIViewController<UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource,GADBannerViewDelegate>
 {
 #define TABBAR_HEIGHT           (49)
 #define NAVIGATIONBAR_HEIGHT    (44)
@@ -17,6 +18,8 @@
 #define MY_NEWS   0
 #define NEW_NEWS  1
 #define USER_NEWS 2
+#define USER_RANKING 3
+#define MY_BANNER_UNIT_ID @"ca-app-pub-8123036141331987/5931080756"
     
 @public
     enum TAG_TAB { TAG_TAB0, TAG_TAB1, TAG_TAB2, };
@@ -37,6 +40,8 @@
     UITableView         *m_TblView;
     
     UIToolbar *menuToolBar;
+    
+    GADBannerView *_bannerView;
 }
 
 @property(retain)  NSMutableArray *items;

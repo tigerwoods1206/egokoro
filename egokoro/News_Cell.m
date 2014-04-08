@@ -25,7 +25,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        Wait_Time = 0;
+        //　       Wait_Time = 0;
     }
     return self;
 }
@@ -46,14 +46,16 @@
     self.NewsDay.text    = NewsItem.date;
     self.NewsDetail.text = NewsItem.description;
     if (NewsItem.user != nil) {
-        self.NewsUser.text      = NewsItem.user;
-        self.NewsUserTitle.text = @"記者:";
+     //   self.NewsUser.text      = NewsItem.user;
+      //  self.NewsUserTitle.text = @"記者:";
     }
     
     if ( NewsItem.news_image !=nil) {
         [self.NewsImage setImage:NewsItem.news_image];
         self.NewsImage.contentMode = UIViewContentModeScaleAspectFill;
         self.NewsImage.clipsToBounds = YES;
+        [self setNeedsDisplay];
+        [self setNeedsLayout];
     }
     else {
         if(self.NewsImage.image==nil){
@@ -65,10 +67,10 @@
 - (void)set_ImageText:(UIImage_Text *)imgtxt
 {
     self.NewsDetail.text    = imgtxt.text;
-    self.NewsUser.text      = imgtxt.user;
+    //self.NewsUser.text      = imgtxt.user;
     self.NewsDay.text       = imgtxt.pub_day;
     self.NewsTitle.text     = imgtxt.news_title;
-    self.NewsUserTitle.text = @"記者:";
+   // self.NewsUserTitle.text = @"記者:";
     [self.NewsImage setImage:imgtxt.image];
 }
 
@@ -92,6 +94,10 @@
               */
 
              NSArray *imgarr = awssl.S3sdb.Data_Arr;
+             int count = [imgarr count];
+             if (count==0) {
+                 return;
+             }
              int rand_num = random() % [imgarr count];
              
              int i_count = 0;

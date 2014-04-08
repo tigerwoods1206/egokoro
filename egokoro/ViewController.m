@@ -18,6 +18,7 @@
 #import "Imagetext_save_load.h"
 #import "AWS_Image_save_load.h"
 #import "SVProgressHUD.h"
+#import "Custum_SimpleDB.h"
 
 @interface ViewController () <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 {
@@ -28,7 +29,7 @@
     AnimationController *_animationController;
     News_Paper_View *News_view;
     int News_Get_Flag;
-    BOOL DrawButton_Flag;
+    int DrawButton_Flag;
 }
 -(void)receiveInfo;
 -(void)receiveInfoWithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock;
@@ -49,6 +50,27 @@
     [self initView:@"main" withColor:[UIColor whiteColor]];
     self.navigationController.delegate = self;
     
+    //ad
+    _bannerView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0.0,
+                                            m_rcMainSrcn.size.height-TABBAR_HEIGHT - GAD_SIZE_320x50.height,
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+    
+    // ここで、AdMobパブリッシャーID ではなく AdMobメディエーションID を設定する
+    _bannerView.adUnitID = MY_BANNER_UNIT_ID;
+    
+    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+    // ビュー階層に追加する。
+    _bannerView.rootViewController = self;
+    _bannerView.delegate = self;
+    
+    [self.view addSubview:_bannerView];
+    
+    // 一般的なリクエストを行って広告を読み込む。
+    [_bannerView loadRequest:[GADRequest request]];
+
+    
     //news flag
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self setNews_Get_Flag:app.NEWS_FLAG];
@@ -60,6 +82,16 @@
     //init Custum Cell
     UINib *nib = [UINib nibWithNibName:@"News_View" bundle:nil];
     [m_TblView registerNib:nib forCellReuseIdentifier:@"Cell"];
+    
+    
+    if([self.news_address compare:@"IINE_RANKING"]==NSOrderedSame){
+        News_Get_Flag = USER_RANKING;
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.news_address = app.hpaddress;
+        //self.title        = app.title;
+      //  [self setNews_Get_Flag:News_Get_Flag];
+    }
+    
     
     // アニメーションを管理するクラス
     _animationController =[[AnimationController alloc] init];
@@ -86,6 +118,7 @@
 		
 		self.navigationItem.leftBarButtonItem = leftBarButtonItem;
 	}
+    
 }
 
 
@@ -146,7 +179,7 @@
      UIBarButtonItem *btn4 = [ [ UIBarButtonItem alloc ] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector( clear: ) ];
     //    UIBarButtonItem * btn3 = [ [ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector( do_navigate: ) ];
     // ボタン配列をツールバーに設定する
-    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn3, btn4, nil ];
+    menuToolBar.items = [ NSArray arrayWithObjects:btn1, btn3, nil ];
     [self.view addSubview:menuToolBar];
 }
 
@@ -217,6 +250,11 @@
             [SVProgressHUD dismiss];
         } errorBlock:nil];
     }
+    else if (News_Get_Flag == USER_RANKING){
+        [self loadInfo_RANKING_WithCompletedBlock:^{
+            
+        } errorBlock:nil];
+    }
     else { // USER_NEWS
         [self loadInfo_AWS_WithCompletedBlock:^{
 
@@ -259,6 +297,43 @@
         
     });
 }
+
+#pragma mark --get cell info from AWS S3 and SimpleDB
+-(void) loadInfo_RANKING_WithCompletedBlock:(dispatch_block_t)block errorBlock:(dispatch_block_t)errorBlock{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        //_items = [[NSMutableArray alloc] initWithArray:tmp_items];
+        [_items removeAllObjects];
+        
+        AWS_Image_save_load *awssl = [[AWS_Image_save_load alloc] init];//getImageArray_with_category
+        [awssl getImageArray_ranking:
+         ^{
+             NSArray *imgarr = awssl.S3sdb.Data_Arr;
+             //NSArray *sort_imgarr = [awssl rand_sort:imgarr];
+             NSMutableArray *title_arr = [[NSMutableArray alloc] init];
+             for (NSData *cur_imgtxt_data in imgarr) {
+                 //Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+                 Item *tmp_item = [[Item alloc] initWithTable:m_TblView];
+                 UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:cur_imgtxt_data];
+                 
+                 if ([self strcmp_in_arr:imgtxt.news_title in_arr:title_arr]) {
+                     continue;
+                 }
+                 
+                 [title_arr addObject:imgtxt.news_title];
+                 
+                 [tmp_item setNews_imagetext:imgtxt];
+                 [_items addObject:tmp_item];
+             }
+             [m_TblView reloadData];
+             [refreshControl endRefreshing];
+             [SVProgressHUD dismiss];
+             // dispatch_sync(dispatch_get_main_queue(), block);
+         }
+         ];
+        
+    });
+}
+
 
 -(BOOL)strcmp_in_arr:(NSString *)str in_arr:(NSArray *)arr
 {
@@ -303,6 +378,12 @@
         }
         else if([self.news_address compare:@"NEW_NEWS"]==NSOrderedSame){
             News_Get_Flag = NEW_NEWS;
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            self.news_address = app.hpaddress;
+            //self.title        = app.title;
+        }
+        else if([self.news_address compare:@"IINE_RANKING"]==NSOrderedSame){
+            News_Get_Flag = USER_RANKING;
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             self.news_address = app.hpaddress;
             //self.title        = app.title;
@@ -361,6 +442,9 @@
             NSDictionary *linkHtmlD = [one_chan valueForKey:@"link"];
             NSString *linkHtml = [linkHtmlD valueForKey:@"text"];
             
+            // 文字列strの中に@"AAA"というパターンが存在するかどうか
+            title = [title stringByReplacingOccurrencesOfString:@"'" withString:@""];
+           
             tmp_item.title    = title;
             tmp_item.date     = str_date_jpn;
             tmp_item.category = self.title;
@@ -433,14 +517,6 @@
     [News_view set_DrawButton_enabled:DrawButton_Flag];
     if(_items.count){
         Item *item = _items[indexPath.row];
-        // NSLog(@"%s",item.description);
-        /*
-        [News_view set_text:item.description];
-        [News_view set_newstitle:item.title];
-        [News_view setPub_day:item.date];
-        [News_view setUser:item.user];
-        [News_view setCategory:item.category];
-         */
         [News_view setCellItem:item];
     }
     

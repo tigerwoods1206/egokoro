@@ -10,6 +10,9 @@
 #import "SVProgressHUD.h"
 #import "AWS_Image_save_load.h"
 #import "MyCell.h"
+#import "GetAPPGrobal.h"
+#import "Post_Check.h"
+
 
 @interface News_Paper_View ()
 {
@@ -18,9 +21,10 @@
     int Setimage_from_ACE;
     ACEViewController *_paint_view;
     NSString *User_Name;
-    NSArray *Imgarr;
+    NSArray *Imgarr, *Adbarr;
     int Imgview_Num;
     NSString *news_text;
+    BOOL Ranking_Flag;
 }
 @end
 
@@ -42,6 +46,7 @@
     
     // Do any additional setup after loading the view from its nib.
     Setimage_from_ACE = FALSE;
+    Ranking_Flag = FALSE;
     //self.drawButton_enabled = TRUE;
     csl_ins = [[Imagetext_save_load alloc] init];
     aws_ins = [[AWS_Image_save_load alloc] init];
@@ -50,64 +55,115 @@
     [_select_Cview setDataSource:self];
     [self.select_Cview registerNib:[UINib nibWithNibName:@"MyCell" bundle:nil] forCellWithReuseIdentifier:@"CELL"];
     
+    //ad
+    _bannerView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0.0,
+                                            self.view.frame.size.height - GAD_SIZE_320x50.height,
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+    
+    // ここで、AdMobパブリッシャーID ではなく AdMobメディエーションID を設定する
+    _bannerView.adUnitID = MY_BANNER_UNIT_ID_2;
+    
+    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+    // ビュー階層に追加する。
+    _bannerView.rootViewController = self;
+    _bannerView.delegate = self;
+    
+    [self.view addSubview:_bannerView];
+    
+    // 一般的なリクエストを行って広告を読み込む。
+    [_bannerView loadRequest:[GADRequest request]];
+
 }
 
 -(void)viewDidLayoutSubviews
 {
   
     self.title = self.news_title;
+   
     [self setButton_enabled:self.drawButton_enabled];
+    [self Update_IineLabel];
     
-    NSArray *imgarr;
-    if (self.drawButton_enabled == NO) {
-        _select_Cview.hidden = NO;
-        //[self init_NewsButton];
-        //imgarr = [csl_ins getImage_OneTitle_Array:self.title];
-        //Imgview_Num = [imgarr count];
-        
-        [aws_ins getImageArray_with_title:self.title add_block:
-         ^{
-             /*
-              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-              
-              });
-              */
-             NSArray *imgarr = aws_ins.S3sdb.Data_Arr;
-             Imgview_Num = [imgarr count];
-             [self set_news_image:imgarr];
-             Imgarr = imgarr;
-             [self.select_Cview reloadData];
-             // dispatch_sync(dispatch_get_main_queue(), block);
-            
-         }
-         ];
-
+    if (Ranking_Flag) {
+        [self load_image_with_user];
+    }
+    else if (self.drawButton_enabled == NO) {
+        [self load_image_widh_titles];
     }
     else {
-        _select_Cview.hidden = YES;
-        //[self init_NewsButton];
-        [_scrollView setFrame:CGRectMake(0,
-                                          _scrollView.frame.origin.y,
-                                         _scrollView.frame.size.width,
-                                         _scrollView.frame.size.height + _select_Cview.frame.size.height)];
-        
-        UIImage_Text *imgtxt = [csl_ins getImageText:self.title];
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imgtxt];
-        if (imgtxt == nil) {
-            imgarr = nil;
-            Imgview_Num = 1;
-        }
-        else {
-            imgarr = [[NSArray alloc ] initWithObjects:data, nil];
-            Imgview_Num = [imgarr count];
-        }
-        Imgarr = imgarr;
-        //[self.select_Cview reloadData];
-        [self set_news_image:imgarr];
+        [self load_image_with_cash];
     }
-
-    
 }
+
+#pragma  -mark private
+-(void)load_image_widh_titles
+{
+    _select_Cview.hidden = NO;
+    [aws_ins getImageArray_with_title:self.title add_block:
+     ^{
+         NSArray *imgarr = aws_ins.S3sdb.Data_Arr;
+         Imgview_Num = [imgarr count];
+         [self set_news_image:imgarr];
+         Imgarr = imgarr;
+         Adbarr = aws_ins.S3sdb.Adb_Arr;
+         [self.select_Cview reloadData];
+         // dispatch_sync(dispatch_get_main_queue(), block);
+         
+     }
+     ];
+}
+
+-(void)load_image_with_user
+{
+    _select_Cview.hidden = YES;
+    //[self init_NewsButton];
+    [_scrollView setFrame:CGRectMake(0,
+                                     _scrollView.frame.origin.y,
+                                     _scrollView.frame.size.width,
+                                     _scrollView.frame.size.height + _select_Cview.frame.size.height)];
+    
+    [aws_ins getImageArray_with_title:self.title add_block:
+     ^{
+         NSArray *imgarr = aws_ins.S3sdb.Data_Arr;
+         Imgview_Num = [imgarr count];
+         [self set_news_image:imgarr];
+         Imgarr = imgarr;
+         Adbarr = aws_ins.S3sdb.Adb_Arr;
+         [self.select_Cview reloadData];
+         // dispatch_sync(dispatch_get_main_queue(), block);
+         
+     }
+     ];
+}
+
+
+-(void)load_image_with_cash
+{
+     NSArray *imgarr;
+    _select_Cview.hidden = YES;
+    //[self init_NewsButton];
+    [_scrollView setFrame:CGRectMake(0,
+                                     _scrollView.frame.origin.y,
+                                     _scrollView.frame.size.width,
+                                     _scrollView.frame.size.height + _select_Cview.frame.size.height)];
+    
+    NSString *cash_key = [NSString stringWithFormat:@"%@_%@_@cash",self.news_title, self.User];
+    UIImage_Text *imgtxt = [csl_ins getImageText:cash_key];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:imgtxt];
+    if (imgtxt == nil) {
+        imgarr = nil;
+        Imgview_Num = 1;
+    }
+    else {
+        imgarr = [[NSArray alloc ] initWithObjects:data, nil];
+        Imgview_Num = [imgarr count];
+    }
+    Imgarr = imgarr;
+    //[self.select_Cview reloadData];
+    [self set_news_image:imgarr];
+}
+
 
 -(void)set_news_image:(NSArray *)imgarr
 {
@@ -156,7 +212,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-   // [self set_newsimage_from_cash];
+    //[self set_newsimage_from_cash];
 }
 
 #pragma -mark private
@@ -244,13 +300,14 @@
 {
     Setimage_from_ACE = TRUE;
     [self news_draw:image];
-    /*
+    
     UIImage_Text *imagetext = [[UIImage_Text alloc] init];
     imagetext.image = image;
     imagetext.text  = self.text;
     imagetext.news_title = self.news_title;
-     */
-    //[csl_ins setImageText:imagetext and_key:self.news_title];
+    
+    NSString *cash_key = [self get_coredata_cashname];
+    [csl_ins setImageText:imagetext and_key:cash_key];
     /*
     NSData *data1 = [NSKeyedArchiver archivedDataWithRootObject:imagetext];
     [csl_ins store_NSData:data1 andkey:self.news_title];
@@ -259,12 +316,21 @@
 
 -(void)set_newsimage_from_cash
 {
-    UIImage_Text *cash_image = [csl_ins getImageText:self.news_title];
+     NSString *cash_key = [self get_coredata_cashname];
+   // [csl_ins setImageText:imagetext and_key:cash_key];
+
+    UIImage_Text *cash_image = [csl_ins getImageText:cash_key];
     if (cash_image!=nil) {
         [self news_draw:cash_image.image];
-        [csl_ins delAllImage];
+       // [csl_ins del_Data_from_key:cash_key];
     }
   
+}
+
+-(NSString *)get_coredata_cashname
+{
+    NSString *cash_key = [NSString stringWithFormat:@"%@_%@_@cash",self.news_title, self.User];
+    return cash_key;
 }
 
 -(void)user_Tap
@@ -274,6 +340,7 @@
 //    [self.navigationController pushViewController:paint_view animated:YES];
 }
 
+#pragma  -mark action
 - (IBAction)draw_newsImage:(id)sender {
     _paint_view = [[ACEViewController alloc] init];
     _paint_view.news_view = self;
@@ -284,13 +351,26 @@
 
 - (IBAction)post_newsImage:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ユーザー名入力"
-                                                     message:@""
-                                                    delegate:self
-                                           cancelButtonTitle:@"キャンセル"
-                                           otherButtonTitles:@"投稿する", nil];
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [alert show];
+    if ([Post_Check chk_enable_post]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ユーザー名入力"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:@"キャンセル"
+                                              otherButtonTitles:@"投稿する", nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [alert show];
+
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"投稿は一日10回までです。"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
+        [alert setAlertViewStyle:UIAlertViewStyleDefault];
+        [alert show];
+
+    }
 }
 
 #pragma mark -alert view delegate
@@ -304,7 +384,10 @@
             imagetext.text  = news_text;
             imagetext.news_title  = self.news_title;
             imagetext.pub_day = self.Pub_day;
-            imagetext.user  = User_Name;
+            NSString *User_Name_Add = [NSString stringWithFormat:@"%@#%@",User_Name,
+                                       [Const makeUniqueString]];
+            imagetext.user  = User_Name_Add;
+            User_Name = User_Name_Add;
             imagetext.category = self.category;
             imagetext.hpadress = self.hpaddress;
             [aws_ins setImageText:imagetext];
@@ -320,6 +403,7 @@
                          maskType:SVProgressHUDMaskTypeGradient];
     [News_Image_Text_View delDrawImage];
     [News_Image_Text_View setDrawImage:image];
+    [self Update_IineLabel];
     [SVProgressHUD dismiss];
 }
 
@@ -367,7 +451,18 @@
         NSData *load_image = [Imgarr objectAtIndex:indexPath.row];
         UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:load_image];
         [cell.imgview setImage:imgtxt.image];
-        cell.cellLabel.text = imgtxt.user;
+        //int length = [Const makeUniqueString];
+        NSRange searchResult = [imgtxt.user rangeOfString:@"#"];
+        NSString *User_short;
+        if(searchResult.location == NSNotFound){
+            // みつからない場合の処理
+            User_short = imgtxt.user;
+        }else{
+            // みつかった場合の処理
+            User_short = [imgtxt.user substringToIndex:searchResult.location];
+        }
+      
+        cell.cellLabel.text = User_short;
     }
     return cell;
 }
@@ -379,6 +474,7 @@
     NSLog(@"Clicked %d-%d",indexPath.section,indexPath.row);
     NSData *load_image = [Imgarr objectAtIndex:indexPath.row];
     UIImage_Text *imgtxt = [NSKeyedUnarchiver unarchiveObjectWithData:load_image];
+    self.User = imgtxt.user;
     [self news_draw:imgtxt.image];
 }
 
@@ -397,6 +493,79 @@
     [self.navigationController pushViewController:uivc animated:YES];
     
   //  return NO;
+}
+#pragma -mark action
+
+- (IBAction)delImage:(id)sender;
+{
+    NSString *cash_key = [self get_coredata_cashname];
+    UIImage_Text *imgtxt = [csl_ins getImageText:cash_key];
+    if (imgtxt!=nil) {
+        if(imgtxt.user==nil) imgtxt.user = self.User;
+        if(imgtxt.news_title ==nil) imgtxt.news_title = self.news_title;
+        [aws_ins delImageText:imgtxt];
+        [csl_ins del_Data_from_key:cash_key];
+    }
+}
+
+#pragma -mark Iine button
+- (IBAction)Vote_Iine:(id)sender
+{
+    NSString *key;
+    AnyData_forSimpleDB *one_adb;
+    IINE_method *iine = [[IINE_method alloc] init];
+    for (AnyData_forSimpleDB *adb in Adbarr) {
+        NSString *username = [adb get_value:@"user"];
+        if ([[adb get_value:@"user"] compare:self.User] == NSOrderedSame) {
+            key = adb.s3Data;
+            one_adb = adb;
+            break;
+        }
+    }
+    
+    BOOL ret = [iine Vote_IINE:one_adb];
+    if(ret){
+        [self Update_IineLabel];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"いいね。は一日一回だけです。"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
+        [alert setAlertViewStyle:UIAlertViewStyleDefault];
+        [alert show];
+    }
+    
+}
+
+- (IBAction)delallVote:(id)sender
+{
+    IINE_method *iine = [[IINE_method alloc] init];
+    [iine delete_Vote_All];
+}
+
+-(void)Update_IineLabel
+{
+    if (self.drawButton_enabled) {
+        self.Iine_Button.enabled = NO;
+        self.IineNum.enabled = NO;
+        self.IineNum.hidden = YES;
+        return;
+    }
+    else {
+        self.Iine_Button.enabled = YES;
+        self.IineNum.enabled = YES;
+         self.IineNum.hidden = NO;
+    }
+    IINE_method *iine = [[IINE_method alloc] init];
+    NSArray *onearr = [iine Get_IINE:self.User and_news_title:self.news_title];
+    if ([onearr count]==0) {
+        self.IineNum.text = [NSString stringWithFormat:@"0"];
+        return;
+    }
+    AnyData_forSimpleDB *adb = [onearr objectAtIndex:0];
+    self.IineNum.text = [adb get_value:@"hpadress"];
 }
 
 @end

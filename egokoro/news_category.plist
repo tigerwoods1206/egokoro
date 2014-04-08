@@ -25,10 +25,8 @@
 		</dict>
 		<key>オプション</key>
 		<dict>
-			<key>みんなのニュース</key>
-			<string>USER_NEWS</string>
-			<key>記事投稿</key>
-			<string>NEW_NEWS</string>
+			<key>いいね。ランキング</key>
+			<string>IINE_RANKING</string>
 		</dict>
 	</dict>
 </dict>

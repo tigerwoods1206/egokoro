@@ -398,6 +398,59 @@
     return data;
 }
 
+-(void)del_Data_from_key:(NSString *)key
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // 取得するエンティティを設定
+    NSEntityDescription *entityDescription;
+    entityDescription = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];
+    [fetchRequest setEntity:entityDescription];
+    
+    // ソート条件配列を作成
+    NSSortDescriptor *desc;
+    desc = [[NSSortDescriptor alloc] initWithKey:@"key" ascending:YES];
+    
+    NSArray *sortDescriptors;
+    sortDescriptors = [[NSArray alloc] initWithObjects:desc, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // 取得条件の設定
+    NSPredicate *pred;
+    pred = [NSPredicate predicateWithFormat:@"title = %@", key];
+    [fetchRequest setPredicate:pred];
+
+    // 取得最大数の設定
+    [fetchRequest setFetchBatchSize:10];
+    
+    // データ取得用コントローラを作成
+    NSFetchedResultsController *resultsController;
+    resultsController = [[NSFetchedResultsController alloc]
+                         initWithFetchRequest:fetchRequest
+                         managedObjectContext:context
+                         sectionNameKeyPath:nil
+                         cacheName:nil];
+    // DBから値を取得する
+    NSError *error;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    // 取得結果は[fetchedObjects]プロパティに入っている
+    NSArray *result = resultsController.fetchedObjects;
+    
+    for (NSManagedObject *obj in result) {
+        [context deleteObject:obj];
+    }
+    
+    if (![context save:&error]) {
+        NSLog(@"error = %@", error);
+    } else {
+        NSLog(@"delete Completed.");
+    }
+
+}
 
 -(void)del_allData
 {
@@ -421,6 +474,7 @@
     //    NSPredicate *pred;
     //    pred = [NSPredicate predicateWithFormat:@"key = %@", keynum];
     //    [fetchRequest setPredicate:pred];
+    
     
     // 取得最大数の設定
     [fetchRequest setFetchBatchSize:1];

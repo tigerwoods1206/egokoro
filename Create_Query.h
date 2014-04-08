@@ -15,6 +15,7 @@
 +(NSString *)create_query:(NSDate *)lastday;
 +(NSString *)create_query:(NSArray *)properties  and_main_key:(NSString *)main_key  and_day_key:(NSString *)day_key and_last_day:(NSDate *)lastday;
 +(NSString *)create_title_query:(NSString *)title;
++(NSString *)create_title_query:(NSString *)title andUser:(NSString *)user;
 +(NSString *)create_category_query:(NSString *)category;
 
 @end

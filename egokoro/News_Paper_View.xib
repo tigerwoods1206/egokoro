@@ -7,6 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="News_Paper_View">
             <connections>
                 <outlet property="Draw_Button" destination="tdU-fh-gbp" id="iIv-4O-VyQ"/>
+                <outlet property="IineNum" destination="8av-Pt-y5v" id="MIE-Vk-xMf"/>
+                <outlet property="Iine_Button" destination="Zml-PI-4JB" id="sm1-qv-ISu"/>
                 <outlet property="Post_Button" destination="vWv-qO-EQm" id="vzl-zB-gYm"/>
                 <outlet property="pageControl" destination="cBd-do-KSY" id="WdK-Yj-soG"/>
                 <outlet property="scrollView" destination="bKj-rZ-Ld2" id="oty-Tu-Odg"/>
@@ -29,18 +31,26 @@
                                 <action selector="draw_newsImage:" destination="-1" id="R7K-lK-AJA"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="17" style="plain" systemItem="fixedSpace" id="zwZ-VE-gRm"/>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="zwZ-VE-gRm"/>
                         <barButtonItem systemItem="action" id="vWv-qO-EQm">
                             <connections>
                                 <action selector="post_newsImage:" destination="-1" id="HaF-bs-2gX"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="N5O-zp-mKg"/>
+                        <barButtonItem image="like_small.png" id="Zml-PI-4JB">
+                            <connections>
+                                <action selector="Vote_Iine:" destination="-1" id="i5q-wH-3ud"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="56" style="plain" systemItem="fixedSpace" id="eTB-AW-sYw"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="zRk-dX-tnI"/>
                     </items>
                 </toolbar>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TKJ-BE-dkD">
                     <rect key="frame" x="0.0" y="519" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="1" green="0.43529412150382996" blue="0.81176471710205078" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bKj-rZ-Ld2">
                     <rect key="frame" x="0.0" y="30" width="320" height="347"/>
@@ -87,10 +97,19 @@
                         <action selector="WebopenURL:" destination="-1" eventType="touchUpInside" id="clG-pv-89D"/>
                     </connections>
                 </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8av-Pt-y5v">
+                    <rect key="frame" x="161" y="488" width="50" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="like_small.png" width="38" height="35"/>
+    </resources>
 </document>

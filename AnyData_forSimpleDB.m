@@ -11,31 +11,6 @@
 
 @implementation AnyData_forSimpleDB
 
--(id)initWithKeys:(NSString *)key andUser:(NSString *)user andPubday:(NSString *)pubday and_title:(NSString *)title
-{
-    self = [super init];
-    if (self)
-    {
-        self.s3Data    = key;
-        self.User      = user;
-        self.Pubday    = pubday;
-        self.title     = title;
-        // self_archived_Data = archived_Data;
-        pairdata_Array = nil;
-        NSMutableArray *getpro = [[NSMutableArray alloc] init];
-
-        for (NSString *pro in [self propertyNames]) {
-            Pair_Data *pair = [[Pair_Data alloc] init];
-            pair.prop  = pro;
-            pair.value = [self valueForKey:pro];
-            [getpro addObject:pair];
-        }
-        
-        pairdata_Array = getpro;
-    }
-    return self;
-}
-
 -(id)initWithKeys:(NSString *)key andProps:(Save_Props *)props
 {
     self = [super init];
@@ -128,7 +103,8 @@
     
     else if (pairdata_Array != nil && self_archived_Data==nil) {
         for (Pair_Data *pair in pairdata_Array) {
-            if([pair.prop compare:key]){
+            NSLog(@"%@",pair.prop);
+            if([pair.prop compare:key] == NSOrderedSame){
                 return pair.value;
             }
         }

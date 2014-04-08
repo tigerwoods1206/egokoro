@@ -65,6 +65,11 @@
     return imgarr;
 }
 
+-(void)delImage_from_key:(NSString *)key
+{
+    [inst del_Data_from_key:key];
+}
+
 -(void)delAllImage
 {
     [inst del_allData];
