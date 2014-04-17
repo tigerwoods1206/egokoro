@@ -102,7 +102,7 @@
                                 <action selector="toggleWidthSlider:" destination="-1" id="57"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="透明度" id="64">
+                        <barButtonItem title="透明" id="64">
                             <connections>
                                 <action selector="toggleAlphaSlider:" destination="-1" id="69"/>
                             </connections>

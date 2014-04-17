@@ -29,6 +29,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, GADBan
     UIImageTextView *News_Image_Text_View;
     GADBannerView *_bannerView;
 }
+@property (weak, nonatomic) IBOutlet UILabel *Swipe_Label;
 @property (weak, nonatomic) IBOutlet UIImageTextView *News_Text_View;
 //@property (strong, nonatomic) UIImageTextView *News_Image_Text_View;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;

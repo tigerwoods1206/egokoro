@@ -13,6 +13,28 @@
 
 #pragma mark - View lifecycle
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    
+    CGRect screenSize = [UIScreen mainScreen].bounds;
+    if (screenSize.size.height <= 480) {
+        // 縦幅が小さい場合には、3.5インチ用のXibファイルを指定します
+        //screenType = SCREEN_TYPE_3_5;
+        nibNameOrNil = @"ILColorPickerLayoutBottomExampleController_35";
+    } else {
+        // 立て幅が長い場合には、4.0インチ用のXibファイルを指定します。
+        //screenType = SCREEN_TYPE_4_0;
+        nibNameOrNil = @"ILColorPickerLayoutBottomExampleController";
+    }
+    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        //_paint_view = nil;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

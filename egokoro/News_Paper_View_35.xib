@@ -4,7 +4,18 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="News_Paper_View"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="News_Paper_View">
+            <connections>
+                <outlet property="IineNum" destination="Eol-DW-jdG" id="Z4g-zE-kjF"/>
+                <outlet property="Iine_Button" destination="7fa-M1-baw" id="Go2-Ax-QoT"/>
+                <outlet property="Post_Button" destination="Dma-gY-1MB" id="qTB-3p-oFc"/>
+                <outlet property="pageControl" destination="3g4-LI-Jsi" id="NrQ-D4-p5p"/>
+                <outlet property="scrollView" destination="mzM-Tc-pZk" id="HUd-Iq-W36"/>
+                <outlet property="select_Cview" destination="acQ-H6-xYY" id="DET-kn-5cn"/>
+                <outlet property="view" destination="yJf-xo-D9Y" id="C0s-ht-3OJ"/>
+                <outlet property="viewnewsButton" destination="MKu-Dn-sao" id="I6J-7P-LlE"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="yJf-xo-D9Y">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -14,27 +25,43 @@
                     <rect key="frame" x="0.0" y="387" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem systemItem="compose" id="nn2-eU-zei"/>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="LvX-t8-JaH"/>
-                        <barButtonItem systemItem="action" id="Dma-gY-1MB"/>
+                        <barButtonItem systemItem="action" id="Dma-gY-1MB">
+                            <connections>
+                                <action selector="post_newsImage:" destination="-1" id="dhx-Eb-EXe"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="nst-yN-6SJ"/>
-                        <barButtonItem image="like_small.png" id="7fa-M1-baw"/>
+                        <barButtonItem image="like_small.png" id="7fa-M1-baw">
+                            <connections>
+                                <action selector="Vote_Iine:" destination="-1" id="KGh-vj-9Fz"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem width="56" style="plain" systemItem="fixedSpace" id="eiF-hp-Hcj"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="l5C-Ps-0de"/>
                     </items>
                 </toolbar>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Swipe Left To お絵描き" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h50-bJ-ge3">
+                    <rect key="frame" x="47" y="250" width="225" height="27"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="656-h8-fZq">
                     <rect key="frame" x="0.0" y="431" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mzM-Tc-pZk">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
+                    <rect key="frame" x="0.0" y="30" width="320" height="254"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="3g4-LI-Jsi">
-                            <rect key="frame" x="135" y="398" width="39" height="37"/>
+                            <rect key="frame" x="135" y="352" width="39" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="changePage:" destination="-1" eventType="valueChanged" id="wnA-MN-12j"/>
+                            </connections>
                         </pageControl>
                     </subviews>
                 </scrollView>

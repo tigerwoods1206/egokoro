@@ -520,9 +520,11 @@
         [News_view setCellItem:item];
     }
     
+    //News_view.modalTransitionStyle
     [self.navigationController pushViewController:News_view animated:YES];
 }
 
+/*
 #pragma mark - UIViewControllerTransitioningDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
@@ -540,5 +542,5 @@
     return _animationController;
 }
 
-
+*/
 @end

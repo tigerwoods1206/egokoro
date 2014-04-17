@@ -32,6 +32,18 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    
+    CGRect screenSize = [UIScreen mainScreen].bounds;
+    if (screenSize.size.height <= 480) {
+        // 縦幅が小さい場合には、3.5インチ用のXibファイルを指定します
+        //screenType = SCREEN_TYPE_3_5;
+        nibNameOrNil = @"News_Paper_View_35";
+    } else {
+        // 立て幅が長い場合には、4.0インチ用のXibファイルを指定します。
+        //screenType = SCREEN_TYPE_4_0;
+        nibNameOrNil = @"News_Paper_View";
+    }
+    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -75,6 +87,10 @@
     // 一般的なリクエストを行って広告を読み込む。
     [_bannerView loadRequest:[GADRequest request]];
 
+    UISwipeGestureRecognizer *swipeUpgesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self  action:@selector(processSwipeLeft:)];
+    swipeUpgesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.scrollView addGestureRecognizer:swipeUpgesture];
+    
 }
 
 -(void)viewDidLayoutSubviews
@@ -93,6 +109,8 @@
     }
     else {
         [self load_image_with_cash];
+        [self draw_newsImage_core];
+        //
     }
 }
 
@@ -180,7 +198,12 @@
         News_Image_Text_View.text = self.text;
         News_Image_Text_View.editable = NO;
         [_scrollView addSubview:News_Image_Text_View];
-        
+        UILabel *swipe =  [[UILabel alloc] initWithFrame:_Swipe_Label.frame];
+        [swipe setText:@"Swipe Left to お絵描き"];
+        [swipe setFont:_Swipe_Label.font];
+        swipe.textColor = _Swipe_Label.textColor;
+        [_scrollView addSubview:swipe];
+       // [_Swipe_Label bringSubviewToFront:self.view];
         
         if(!Setimage_from_ACE){
             if (_paint_view != nil && _paint_view.end_drawed) {
@@ -342,9 +365,22 @@
 
 #pragma  -mark action
 - (IBAction)draw_newsImage:(id)sender {
+    [self draw_newsImage_core];
+}
+-(void)draw_newsImage_core
+{
     _paint_view = [[ACEViewController alloc] init];
     _paint_view.news_view = self;
     //[self.navigationController pushViewController:_paint_view animated:YES];
+   // _paint_view.modalTransitionStyle = UIModalPresentationPageSheet;
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.4;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionPush;
+    transition.subtype = kCATransitionFromRight;
+    [self.view.window.layer addAnimation:transition forKey:nil];
+    
+    _paint_view.modalTransitionStyle = UIModalPresentationNone;
     [self presentViewController:_paint_view animated:YES completion:nil];
     [News_Image_Text_View delDrawImage];
 }
@@ -371,6 +407,18 @@
         [alert show];
 
     }
+}
+
+-(void)processSwipeLeft:(UITapGestureRecognizer *)sender
+{
+    if (self.drawButton_enabled == NO) {
+        return;
+    }
+    
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        [self draw_newsImage_core];
+    }
+
 }
 
 #pragma mark -alert view delegate
