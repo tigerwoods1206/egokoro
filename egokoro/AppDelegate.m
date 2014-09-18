@@ -16,6 +16,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+   // GA_INIT_TRACKER(20, @"UA-50129579-4”);
+    GA_INIT_TRACKER(20,@"UA-50129579-4");
+    
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.NEWS_FLAG = USER_NEWS;

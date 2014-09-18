@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "News_Paper_View.h"
+#import "GADBannerView.h"
+
+#define AD_HEIGHT (50)
+#define MY_BANNER_UNIT_ID_3 @"ca-app-pub-8123036141331987/8020785958"
 
 @class ACEDrawingView;
 @class News_Paper_View;
 
-@interface ACEViewController : UIViewController
+@interface ACEViewController : UIViewController<GADBannerViewDelegate>
+{
+    GADBannerView *_bannerView;
+}
 
 @property (nonatomic, unsafe_unretained) IBOutlet ACEDrawingView *drawingView;
 @property (nonatomic, unsafe_unretained) IBOutlet UISlider *lineWidthSlider;

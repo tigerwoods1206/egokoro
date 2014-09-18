@@ -79,6 +79,18 @@
 		572CBBC718BAD228008E6D13 /* S3_SimpleDB_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CBBC618BAD228008E6D13 /* S3_SimpleDB_save_load.m */; };
 		572CBBCA18BEB498008E6D13 /* AWS_Image_save_load.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CBBC918BEB497008E6D13 /* AWS_Image_save_load.m */; };
 		57374C3B18FEDC3B005EF713 /* News_Paper_View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57374C3A18FEDC3B005EF713 /* News_Paper_View.xib */; };
+		57547F61190535B8001267FB /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F5B190535B8001267FB /* libNendAd.a */; };
+		57547F62190535B8001267FB /* NADView_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 57547F60190535B8001267FB /* NADView_readme.txt */; };
+		57547F66190535CB001267FB /* libAdapterNend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F64190535CB001267FB /* libAdapterNend.a */; };
+		57547F67190535CB001267FB /* libAdapterNend_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 57547F65190535CB001267FB /* libAdapterNend_readme.txt */; };
+		57547F69190535EF001267FB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F68190535EF001267FB /* Security.framework */; };
+		57547F6B190536EE001267FB /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 57547F6A190536EE001267FB /* README.txt */; };
+		57547F6E19053738001267FB /* libAdapterIMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F6D19053738001267FB /* libAdapterIMobile.a */; };
+		57547F70190537C8001267FB /* imobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F6F190537C7001267FB /* imobileAds.framework */; };
+		57547F7A190541B1001267FB /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F78190541B1001267FB /* libAdIdAccess.a */; };
+		57547F7B190541B1001267FB /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547F79190541B1001267FB /* libGoogleAnalyticsServices.a */; };
+		57547FBE1905505D001267FB /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 57547F7E1905505C001267FB /* Changelog.txt */; };
+		57547FED190552BB001267FB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 57547FEC190552BB001267FB /* libsqlite3.dylib */; };
 		579EEDAC18D913BD006B7752 /* blue.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 579EEDAB18D913BC006B7752 /* blue.jpg */; };
 		579EEDF818DDEF42006B7752 /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 579EEDF618DDEF41006B7752 /* MyCell.m */; };
 		579EEDF918DDEF42006B7752 /* MyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579EEDF718DDEF41006B7752 /* MyCell.xib */; };
@@ -326,6 +338,33 @@
 		572CBBC918BEB497008E6D13 /* AWS_Image_save_load.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWS_Image_save_load.m; sourceTree = "<group>"; };
 		57374C3A18FEDC3B005EF713 /* News_Paper_View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = News_Paper_View.xib; sourceTree = "<group>"; };
 		57374C3C18FF4D02005EF713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ACEViewController.xib; sourceTree = "<group>"; };
+		57547F5B190535B8001267FB /* libNendAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNendAd.a; sourceTree = "<group>"; };
+		57547F5C190535B8001267FB /* NADIconArrayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADIconArrayView.h; sourceTree = "<group>"; };
+		57547F5D190535B8001267FB /* NADIconLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADIconLoader.h; sourceTree = "<group>"; };
+		57547F5E190535B8001267FB /* NADIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADIconView.h; sourceTree = "<group>"; };
+		57547F5F190535B8001267FB /* NADView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADView.h; sourceTree = "<group>"; };
+		57547F60190535B8001267FB /* NADView_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NADView_readme.txt; sourceTree = "<group>"; };
+		57547F64190535CB001267FB /* libAdapterNend.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterNend.a; sourceTree = "<group>"; };
+		57547F65190535CB001267FB /* libAdapterNend_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libAdapterNend_readme.txt; sourceTree = "<group>"; };
+		57547F68190535EF001267FB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		57547F6A190536EE001267FB /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		57547F6D19053738001267FB /* libAdapterIMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIMobile.a; sourceTree = "<group>"; };
+		57547F6F190537C7001267FB /* imobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = imobileAds.framework; sourceTree = "<group>"; };
+		57547F721905417F001267FB /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		57547F731905417F001267FB /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		57547F741905417F001267FB /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		57547F751905417F001267FB /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		57547F761905417F001267FB /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		57547F771905417F001267FB /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		57547F78190541B1001267FB /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
+		57547F79190541B1001267FB /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		57547F7E1905505C001267FB /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
+		57547FB81905505D001267FB /* TAGContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainer.h; sourceTree = "<group>"; };
+		57547FB91905505D001267FB /* TAGContainerOpener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainerOpener.h; sourceTree = "<group>"; };
+		57547FBA1905505D001267FB /* TAGDataLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGDataLayer.h; sourceTree = "<group>"; };
+		57547FBB1905505D001267FB /* TAGLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGLogger.h; sourceTree = "<group>"; };
+		57547FBC1905505D001267FB /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGManager.h; sourceTree = "<group>"; };
+		57547FEC190552BB001267FB /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		579EEDAB18D913BC006B7752 /* blue.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blue.jpg; sourceTree = "<group>"; };
 		579EEDF518DDEF41006B7752 /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
 		579EEDF618DDEF41006B7752 /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
@@ -511,20 +550,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57547FED190552BB001267FB /* libsqlite3.dylib in Frameworks */,
+				57BE457B188227C0003F02B0 /* SystemConfiguration.framework in Frameworks */,
+				57AED65118ABBEAB008A4A58 /* CoreData.framework in Frameworks */,
+				57547F69190535EF001267FB /* Security.framework in Frameworks */,
 				57234A0318F062C300D42963 /* AdSupport.framework in Frameworks */,
 				57234A0118F062B500D42963 /* CoreTelephony.framework in Frameworks */,
+				57547F6E19053738001267FB /* libAdapterIMobile.a in Frameworks */,
 				57273CD718D5CC8B0060B673 /* StoreKit.framework in Frameworks */,
 				572349FF18F0629A00D42963 /* AVFoundation.framework in Frameworks */,
-				57BE457B188227C0003F02B0 /* SystemConfiguration.framework in Frameworks */,
+				57547F61190535B8001267FB /* libNendAd.a in Frameworks */,
 				572349FD18F0626E00D42963 /* MessageUI.framework in Frameworks */,
 				572349FB18F0625F00D42963 /* AudioToolbox.framework in Frameworks */,
+				57547F66190535CB001267FB /* libAdapterNend.a in Frameworks */,
 				572349F218F0620B00D42963 /* libGoogleAdMobAds.a in Frameworks */,
-				57AED65118ABBEAB008A4A58 /* CoreData.framework in Frameworks */,
 				57BE45831882281D003F02B0 /* libxml2.2.dylib in Frameworks */,
 				57BE4581188227F5003F02B0 /* libz.dylib in Frameworks */,
+				57547F7A190541B1001267FB /* libAdIdAccess.a in Frameworks */,
 				57BE457D188227D3003F02B0 /* libtidy.dylib in Frameworks */,
+				57547F70190537C8001267FB /* imobileAds.framework in Frameworks */,
 				57AED63718ABB94A008A4A58 /* AWSRuntime.framework in Frameworks */,
 				57AED63B18ABB95D008A4A58 /* AWSSimpleDB.framework in Frameworks */,
+				57547F7B190541B1001267FB /* libGoogleAnalyticsServices.a in Frameworks */,
 				57BE4579188227AF003F02B0 /* MobileCoreServices.framework in Frameworks */,
 				57AED63A18ABB95D008A4A58 /* AWSS3.framework in Frameworks */,
 				57BE4577188227A1003F02B0 /* CFNetwork.framework in Frameworks */,
@@ -933,6 +980,81 @@
 			name = S3_SimpleDB_Core;
 			sourceTree = "<group>";
 		};
+		57547F5A190535B8001267FB /* NendAd */ = {
+			isa = PBXGroup;
+			children = (
+				57547F5B190535B8001267FB /* libNendAd.a */,
+				57547F5C190535B8001267FB /* NADIconArrayView.h */,
+				57547F5D190535B8001267FB /* NADIconLoader.h */,
+				57547F5E190535B8001267FB /* NADIconView.h */,
+				57547F5F190535B8001267FB /* NADView.h */,
+				57547F60190535B8001267FB /* NADView_readme.txt */,
+			);
+			path = NendAd;
+			sourceTree = "<group>";
+		};
+		57547F63190535CB001267FB /* AdMobMediationAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				57547F64190535CB001267FB /* libAdapterNend.a */,
+				57547F65190535CB001267FB /* libAdapterNend_readme.txt */,
+			);
+			path = AdMobMediationAdapter;
+			sourceTree = "<group>";
+		};
+		57547F6C19053738001267FB /* libAdapterIMobile */ = {
+			isa = PBXGroup;
+			children = (
+				57547F6D19053738001267FB /* libAdapterIMobile.a */,
+			);
+			path = libAdapterIMobile;
+			sourceTree = "<group>";
+		};
+		57547F711905417F001267FB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				57547F78190541B1001267FB /* libAdIdAccess.a */,
+				57547F79190541B1001267FB /* libGoogleAnalyticsServices.a */,
+				57547F721905417F001267FB /* GAI.h */,
+				57547F731905417F001267FB /* GAIDictionaryBuilder.h */,
+				57547F741905417F001267FB /* GAIFields.h */,
+				57547F751905417F001267FB /* GAILogger.h */,
+				57547F761905417F001267FB /* GAITrackedViewController.h */,
+				57547F771905417F001267FB /* GAITracker.h */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		57547F7C1905502C001267FB /* Anal */ = {
+			isa = PBXGroup;
+			children = (
+				57547F7D1905505C001267FB /* GoogleTagManager */,
+				57547F711905417F001267FB /* Library */,
+			);
+			name = Anal;
+			sourceTree = "<group>";
+		};
+		57547F7D1905505C001267FB /* GoogleTagManager */ = {
+			isa = PBXGroup;
+			children = (
+				57547F7E1905505C001267FB /* Changelog.txt */,
+				57547FB71905505D001267FB /* Library */,
+			);
+			path = GoogleTagManager;
+			sourceTree = "<group>";
+		};
+		57547FB71905505D001267FB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				57547FB81905505D001267FB /* TAGContainer.h */,
+				57547FB91905505D001267FB /* TAGContainerOpener.h */,
+				57547FBA1905505D001267FB /* TAGDataLayer.h */,
+				57547FBB1905505D001267FB /* TAGLogger.h */,
+				57547FBC1905505D001267FB /* TAGManager.h */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		57AA13EB18B2D48D00DF504C /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -1178,6 +1300,11 @@
 		57F0774E1852D28E00A5572C = {
 			isa = PBXGroup;
 			children = (
+				57547F7C1905502C001267FB /* Anal */,
+				57547F6C19053738001267FB /* libAdapterIMobile */,
+				57547F6A190536EE001267FB /* README.txt */,
+				57547F63190535CB001267FB /* AdMobMediationAdapter */,
+				57547F5A190535B8001267FB /* NendAd */,
 				5723490E18F0620200D42963 /* GoogleAdMobAdsSdkiOS-6.8.0 */,
 				57273C4D18D5CC260060B673 /* AppReview */,
 				57AA13EB18B2D48D00DF504C /* SVProgressHUD */,
@@ -1203,6 +1330,9 @@
 		57F077591852D28F00A5572C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				57547FEC190552BB001267FB /* libsqlite3.dylib */,
+				57547F6F190537C7001267FB /* imobileAds.framework */,
+				57547F68190535EF001267FB /* Security.framework */,
 				57234A0218F062C300D42963 /* AdSupport.framework */,
 				57234A0018F062B500D42963 /* CoreTelephony.framework */,
 				572349FE18F0629A00D42963 /* AVFoundation.framework */,
@@ -1431,10 +1561,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57547F62190535B8001267FB /* NADView_readme.txt in Resources */,
 				57273CD218D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57273CCA18D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57273CD518D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57F3920018765EFD004210DB /* ILColorPickerLayoutBottomExampleController.xib in Resources */,
+				57547F67190535CB001267FB /* libAdapterNend_readme.txt in Resources */,
 				572A792B18F4166E00B94025 /* Icon-Small.png in Resources */,
 				57A6BC7318E82CB600D3032F /* like_small2.png in Resources */,
 				57BE4516187C2E3B003F02B0 /* list.psd in Resources */,
@@ -1476,6 +1608,7 @@
 				57273CB718D5CC640060B673 /* CHANGELOG.md in Resources */,
 				579EEDAC18D913BD006B7752 /* blue.jpg in Resources */,
 				572A792F18F4166E00B94025 /* iTunesArtwork.png in Resources */,
+				57547FBE1905505D001267FB /* Changelog.txt in Resources */,
 				57273CD018D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57273CC318D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57A6BC7518E8350700D3032F /* like_small.png in Resources */,
@@ -1497,6 +1630,7 @@
 				57273CB518D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				57374C3B18FEDC3B005EF713 /* News_Paper_View.xib in Resources */,
 				57F0776E1852D28F00A5572C /* Main.storyboard in Resources */,
+				57547F6B190536EE001267FB /* README.txt in Resources */,
 				57273CC118D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
 				572A793218F42B7400B94025 /* News_Paper_View_35.xib in Resources */,
 				57273CC918D5CC640060B673 /* AppiraterLocalizable.strings in Resources */,
@@ -2006,6 +2140,10 @@
 					"$(inherited)",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0/Add-ons/GoogleAnalyticsServicesiOS_3.03",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0",
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/NendAd,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/AdMobMediationAdapter,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/libAdapterIMobile,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/Library,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = egokoro.temp_caseinsensitive_rename.temp_caseinsensitive_rename;
@@ -2128,6 +2266,10 @@
 					"$(inherited)",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0/Add-ons/GoogleAnalyticsServicesiOS_3.03",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0",
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/NendAd,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/AdMobMediationAdapter,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/libAdapterIMobile,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/Library,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = egokoro.temp_caseinsensitive_rename.temp_caseinsensitive_rename;
@@ -2159,6 +2301,10 @@
 					"$(inherited)",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0/Add-ons/GoogleAnalyticsServicesiOS_3.03",
 					"/Users/ootaisao/Dropbox/ios_xcode/egokoro/GoogleAdMobAdsSdkiOS-6.8.0",
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/NendAd,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/AdMobMediationAdapter,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/libAdapterIMobile,
+					/Users/ootaisao/Dropbox/ios_xcode/egokoro/Library,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = egokoro.temp_caseinsensitive_rename.temp_caseinsensitive_rename;

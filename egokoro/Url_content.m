@@ -14,6 +14,7 @@
 {
     //http://boilerpipe-web.appspot.com/extract?url=%@&output=json
     //http://ec2-54-199-163-10.ap-northeast-1.compute.amazonaws.com/php/get_test.php?page=http://headlines.yahoo.co.jp/hl?a=20140125-00000055-mai-soci
+    //http://ec2-54-199-163-10.ap-northeast-1.compute.amazonaws.com/kodoku/story.plist
     NSString *urlString = [NSString stringWithFormat:@"http://ec2-54-199-163-10.ap-northeast-1.compute.amazonaws.com/php/get_text.php?page=%@", urlstring];
     urlString = [urlString  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 

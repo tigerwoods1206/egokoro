@@ -61,6 +61,26 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     self.end_drawed = FALSE;
     
     curColor = [UIColor redColor];
+    
+    //ad
+    _bannerView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0.0,
+                                            self.view.frame.size.height - GAD_SIZE_320x50.height,
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+    
+    // ここで、AdMobパブリッシャーID ではなく AdMobメディエーションID を設定する
+    _bannerView.adUnitID = MY_BANNER_UNIT_ID_3;
+    
+    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+    // ビュー階層に追加する。
+    _bannerView.rootViewController = self;
+    _bannerView.delegate = self;
+    
+    [self.view addSubview:_bannerView];
+    
+    // 一般的なリクエストを行って広告を読み込む。
+    [_bannerView loadRequest:[GADRequest request]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,6 +89,11 @@ ILColorPickerLayoutBottomExampleControllerDelegate
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    GA_TRACK_CLASS;
+}
 
 #pragma mark - Actions
 

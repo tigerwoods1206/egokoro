@@ -86,6 +86,9 @@
                     <state key="normal" title="元ネタのニュースを見る">
                         <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="WebopenURL:" destination="-1" eventType="touchUpInside" id="Ztb-5G-dKw"/>
+                    </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30e-f4-Tl8">
                     <rect key="frame" x="111" y="488" width="50" height="23"/>

@@ -121,6 +121,12 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    GA_TRACK_CLASS;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
